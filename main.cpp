@@ -29,17 +29,17 @@ main()
   //    firstp.join();
   //    secondc.join();
 
-  std::cout << StreamFlow::Factory::describe() << std::endl;
+  std::cout << StreamFlow::Factory::description() << std::endl;
 
   //   return 1;
 
   Application app("appName");
-  app.add_component("producer");
-  app.add_component("consumer");
+  app.addComponent("producer");
+  app.addComponent("consumer");
   app["producer"]["out"] >> app["consumer"]["in"];
 
-  app.add_component("producerINT");
-  app.add_component("consumerINT");
+  app.addComponent("producerINT");
+  app.addComponent("consumerINT");
   app["producerINT"]["out"] >> app["consumerINT"]["in"];
 
   std::cout << app["producer"]["out"].describe() << std::endl;

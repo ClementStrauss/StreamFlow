@@ -3,6 +3,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 project(StreamFlow)
 file(GLOB SRC "components/*.h")
+
 message(status ${SRC})
 
 add_executable(${PROJECT_NAME} "main.cpp")

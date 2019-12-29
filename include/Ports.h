@@ -57,7 +57,7 @@ public:
   bool isExposed() const { return info.exposed; }
   bool isUsable() const { return isConnected() && isBufferValid() && isExposed(); }
 
-  std::string describe() const
+  std::string describe() const override final
   {
     std::ostringstream oss;
     oss << ObjectBase::describe() << " ";
@@ -150,9 +150,9 @@ public:
   //    }
 
 protected:
-  void allocateBufferPtr()
+  void allocateBufferPtr(std::string name)
   {
-    buffer_ptr = std::static_pointer_cast<Queue_Base>(std::make_shared<ComponentExchangeQueue<T>>());
+    buffer_ptr = std::static_pointer_cast<Queue_Base>(std::make_shared<ComponentExchangeQueue<T>>(name));
     info.buffer_ptr = buffer_ptr.get();
   }
 };
@@ -178,7 +178,7 @@ public:
     : IO<T>(output, name, description)
   {
     ObjectBase::setName(name);
-    IO<T>::allocateBufferPtr();
+    IO<T>::allocateBufferPtr(name);
   }
 };
 
@@ -191,7 +191,7 @@ public:
     : IO<T>(parameter, name, description)
   {
     ObjectBase::setName(name);
-    IO<T>::allocateBufferPtr();
+    IO<T>::allocateBufferPtr(name);
   }
 };
 }

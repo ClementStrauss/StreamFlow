@@ -27,15 +27,15 @@ public:
 
   std::string describe() const override { return ObjectBase::describe(); }
 
-  void add_component(std::string factoryKey) { add_component(factoryKey, factoryKey); }
+  void addComponent(std::string factoryKey) { addComponent(factoryKey, factoryKey); }
 
-  void add_component(std::string factoryKey, std::string name)
+  void addComponent(std::string factoryKey, std::string instanceName)
   {
-    if (instanciated_components_map.count(name) != 0)
-      throw std::runtime_error(factoryKey + " already created with name \"" + name + "\" : cannot create two components with the same name");
+    if (instanciated_components_map.count(instanceName) != 0)
+      throw std::runtime_error(factoryKey + " already created with name \"" + instanceName + "\" : cannot create two components with the same name");
 
-    instanciated_components_map[name] = StreamFlow::Factory::make_ptr(factoryKey);
-    instanciated_components_map[name]->setName(name);
+    instanciated_components_map[instanceName] = StreamFlow::Factory::create(factoryKey);
+    instanciated_components_map[instanceName]->setName(instanceName);
   }
 
   StreamFlow::ComponentBase& operator[](std::string key)
@@ -54,6 +54,9 @@ public:
         component.second.get()->status = componentStatus::running;
         while (component.second.get()->status == componentStatus::running)
           component.second.get()->step();
+
+        std::cout << "end of " << component.first << std::endl;
+        component.second.~unique_ptr();
       });
 #ifdef __linux__
       pthread_setname_np(threads[component.first].native_handle(), component.second->name().c_str());

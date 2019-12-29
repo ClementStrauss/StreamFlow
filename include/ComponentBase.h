@@ -36,7 +36,11 @@ public:
     setName(name);
     setDescription(description);
   }
-  virtual ~ComponentBase();
+  virtual ~ComponentBase() override
+  {
+    portsMap.clear();
+    std::cout << "ComponentBase delete " << name() << std::endl;
+  }
 
   virtual void init() = 0;
   virtual void step() = 0;
@@ -86,8 +90,6 @@ public:
 private:
   std::map<std::string, StreamFlow::IO_base*> portsMap;
 };
-
-ComponentBase::~ComponentBase() {}
 }
 
 #endif // COMPONENTBASE_H
