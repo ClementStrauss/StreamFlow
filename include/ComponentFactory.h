@@ -2,7 +2,7 @@
 #define COMPONENTFACTORY_H
 
 #include "ComponentBase.h"
-#include "ObjectBase.h"
+#include "DocumentedObject.h"
 #include <cassert>
 
 namespace StreamFlow
@@ -30,7 +30,7 @@ public:
     return m_creators[key]();
   }
 
-  std::string static description()
+  static std::string describe()
   {
     std::ostringstream oss;
     oss << "+++++++++++++++++++++++++++FACTORY++++++++++++++++++++++++++++" << std::endl;
@@ -43,7 +43,7 @@ public:
     oss << "+++++++++++++++++++++++++END FACTORY+++++++++++++++++++++++++++" << std::endl;
 
     return oss.str();
-  };
+  }
 
 private:
   static std::unordered_map<Key, Creator> m_creators;

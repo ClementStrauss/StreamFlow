@@ -13,7 +13,7 @@
 #include <typeinfo>
 
 #include "ComponentExchangeQueue.h"
-#include "ObjectBase.h"
+#include "DocumentedObject.h"
 
 namespace StreamFlow
 {
@@ -47,7 +47,7 @@ struct IOInformation
   size_t dataTypeHashCode;
 };
 
-class IO_base : public ObjectBase
+class IO_base : public DocumentedObject
 {
 public:
   // IO_base() = delete;
@@ -60,7 +60,7 @@ public:
   std::string describe() const override final
   {
     std::ostringstream oss;
-    oss << ObjectBase::describe() << " ";
+    oss << DocumentedObject::describe() << " ";
     oss << "type=" << demangle(info.dataType.c_str()) << ", dir=" << behaviorNames[info.behavior] << ", connected=" << std::to_string(info.connected) << ", ptr=" << info.buffer_ptr;
     return oss.str();
   }
@@ -161,11 +161,11 @@ template<typename T>
 class Input : public IO<T>
 {
 public:
-  Input(){};
+  Input() {}
   Input(std::string name, std::string description)
     : IO<T>(input, name, description)
   {
-    ObjectBase::setName(name);
+    DocumentedObject::setName(name);
   }
 };
 
@@ -177,7 +177,7 @@ public:
   Output(std::string name, std::string description)
     : IO<T>(output, name, description)
   {
-    ObjectBase::setName(name);
+    DocumentedObject::setName(name);
     IO<T>::allocateBufferPtr(name);
   }
 };
@@ -190,7 +190,7 @@ public:
   Parameter(std::string name, std::string description)
     : IO<T>(parameter, name, description)
   {
-    ObjectBase::setName(name);
+    DocumentedObject::setName(name);
     IO<T>::allocateBufferPtr(name);
   }
 };

@@ -6,7 +6,7 @@
 namespace StreamFlow
 {
 
-class ObjectBase
+class DocumentedObject
 {
 public:
   std::string name() const noexcept { return objectName; }
@@ -17,7 +17,7 @@ public:
     oss << "name=" << objectName << ", desc=" << objectDescription << " ";
     return oss.str();
   }
-  virtual ~ObjectBase() = default;
+  virtual ~DocumentedObject() = default;
 
   void setName(std::string aName) noexcept { objectName = aName; }
   void setDescription(std::string aDesc) noexcept { objectDescription = aDesc; }

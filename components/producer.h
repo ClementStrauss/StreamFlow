@@ -24,7 +24,7 @@ public:
     if (counter < 1000)
     {
       auto ptr = std::make_unique<int>(counter);
-      out.write(std::make_unique<int>(counter));
+      out.write(ptr);
       counter++;
       //  std::this_thread::sleep_for(std::chrono::microseconds(100));
     }

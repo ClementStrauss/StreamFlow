@@ -8,24 +8,24 @@
 
 #include "ComponentBase.h"
 #include "ComponentFactory.h"
-#include "ObjectBase.h"
+#include "DocumentedObject.h"
 
 namespace StreamFlow
 {
 
-class Application final : public ObjectBase
+class Application final : public DocumentedObject
 {
 public:
   Application(std::string name = "application", std::string desc = "empty description")
   {
-    ObjectBase::setName(name);
-    ObjectBase::setDescription(desc);
+    DocumentedObject::setName(name);
+    DocumentedObject::setDescription(desc);
 #ifdef __linux__
     pthread_setname_np(pthread_self(), name.c_str()); // set the name, visible in htop
 #endif
   }
 
-  std::string describe() const override { return ObjectBase::describe(); }
+  std::string describe() const override { return DocumentedObject::describe(); }
 
   void addComponent(std::string factoryKey) { addComponent(factoryKey, factoryKey); }
 

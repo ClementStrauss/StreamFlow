@@ -1,7 +1,7 @@
 #ifndef COMPONENTEXCHANGEQUEUE_H
 #define COMPONENTEXCHANGEQUEUE_H
 
-#include "ObjectBase.h"
+#include "DocumentedObject.h"
 #include <condition_variable>
 #include <iostream>
 #include <mutex>
@@ -10,7 +10,7 @@
 namespace StreamFlow
 {
 
-class Queue_Base : public ObjectBase
+class Queue_Base : public DocumentedObject
 {
 };
 

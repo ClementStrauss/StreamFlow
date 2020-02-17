@@ -29,25 +29,33 @@ main()
   //    firstp.join();
   //    secondc.join();
 
-  std::cout << StreamFlow::Factory::description() << std::endl;
+  std::cout << StreamFlow::Factory::describe() << std::endl;
 
   //   return 1;
 
-  Application app("appName");
+  Application app("put application name here");
+  // create Component (or node) in the app
   app.addComponent("producer");
   app.addComponent("consumer");
+
+  // connect app's components together
   app["producer"]["out"] >> app["consumer"]["in"];
 
   app.addComponent("producerINT");
   app.addComponent("consumerINT");
   app["producerINT"]["out"] >> app["consumerINT"]["in"];
 
+  // ask for component port documentation
   std::cout << app["producer"]["out"].describe() << std::endl;
   std::cout << app["consumer"]["in"].describe() << std::endl;
+
+  // describe the application
   std::cout << app.describe() << std::endl;
+
+  // describe a component
   std::cout << app["producer"].describe() << std::endl;
 
-  //    return 1;
+  // run the application, enjoy pipeline and parallelism;
   app.run();
 
   //    RLNM::producerComponent producerComponent;

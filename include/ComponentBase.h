@@ -1,7 +1,7 @@
 #ifndef COMPONENTBASE_H
 #define COMPONENTBASE_H
 
-#include "ObjectBase.h"
+#include "DocumentedObject.h"
 #include "Ports.h"
 #include <map>
 #include <memory>
@@ -10,13 +10,6 @@
 
 namespace StreamFlow
 {
-
-template<typename T>
-class SmartPointer : public std::unique_ptr<T>
-{
-public:
-  T& get_value() const { return *(std::unique_ptr<T>::get()); }
-};
 
 enum componentStatus
 {
@@ -27,7 +20,7 @@ enum componentStatus
 
 };
 
-class ComponentBase : public ObjectBase
+class ComponentBase : public DocumentedObject
 {
 public:
   ComponentBase() = delete;
@@ -64,7 +57,7 @@ public:
 
     std::ostringstream oss;
     oss << ">>>" << std::endl;
-    oss << ObjectBase::describe() << std::endl;
+    oss << DocumentedObject::describe() << std::endl;
     oss << "Exposed ports :" << std::endl;
     for (auto& p : portsMap)
     {
