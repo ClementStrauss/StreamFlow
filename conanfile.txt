@@ -4,6 +4,7 @@ spdlog/1.6.0
 
 [options]
 opencv:tiff=False # false
+opencv:protobuf=False
 
 [generators]
 cmake
