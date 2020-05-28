@@ -18,6 +18,8 @@ jobs:
            echo $PATH
            conan --version
            ls
+           sudo ln -s ~/.local/bin/conan /usr/local/bin/conan
+
     - name: configure
       run: conan install . --build missing; cmake .
     - name: make
