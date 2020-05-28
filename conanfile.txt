@@ -3,7 +3,8 @@ opencv/4.1.1@conan/stable
 spdlog/1.6.0
 
 [options]
-opencv:tiff=false # false
+opencv:tiff=False # false
+opencv:protobuf=False
 
 [generators]
 cmake
