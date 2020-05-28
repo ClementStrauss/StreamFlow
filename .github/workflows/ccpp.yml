@@ -10,7 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install
-      run: pip install wheel; pip install conan
+      run: pip install --user wheel conan
     - name: configure
       run: conan install . --build missing; cmake .
     - name: make
