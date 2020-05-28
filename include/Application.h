@@ -25,9 +25,9 @@ public:
 #endif
   }
 
-  std::string describe() const override { return DocumentedObject::describe(); }
+  std::string doc() const override { return DocumentedObject::doc(); }
 
-  void addComponent(std::string factoryKey) { addComponent(factoryKey, factoryKey); }
+  void addNode(std::string factoryKey) { addComponent(factoryKey, factoryKey); }
 
   void addComponent(std::string factoryKey, std::string instanceName)
   {

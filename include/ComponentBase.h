@@ -52,16 +52,16 @@ public:
     return port;
   }
 
-  std::string describe() const override
+  std::string doc() const override
   {
 
     std::ostringstream oss;
     oss << ">>>" << std::endl;
-    oss << DocumentedObject::describe() << std::endl;
+    oss << DocumentedObject::doc() << std::endl;
     oss << "Exposed ports :" << std::endl;
     for (auto& p : portsMap)
     {
-      oss << p.second->describe() << std::endl;
+      oss << p.second->doc() << std::endl;
     }
     oss << "<<<" << std::endl;
     return oss.str();

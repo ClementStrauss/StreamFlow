@@ -38,7 +38,7 @@ public:
     {
       oss << "registered with key: \"" + componnentCreator.first + "\" :" << std::endl;
       auto comp = componnentCreator.second();
-      oss << comp->describe();
+      oss << comp->doc();
     }
     oss << "+++++++++++++++++++++++++END FACTORY+++++++++++++++++++++++++++" << std::endl;
 

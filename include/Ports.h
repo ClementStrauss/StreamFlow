@@ -27,8 +27,7 @@ enum IOBehavior
 };
 static std::string behaviorNames[] = { "input", "output", "parameter", "undefined" };
 
-std::string
-demangle(const char* name)
+std::string demangle(const char* name)
 {
   int status = -4; // some arbitrary value to eliminate the compiler warning
   std::unique_ptr<char, void (*)(void*)> res{ abi::__cxa_demangle(name, nullptr, nullptr, &status), std::free };
@@ -57,10 +56,10 @@ public:
   bool isExposed() const { return info.exposed; }
   bool isUsable() const { return isConnected() && isBufferValid() && isExposed(); }
 
-  std::string describe() const override final
+  std::string doc() const override final
   {
     std::ostringstream oss;
-    oss << DocumentedObject::describe() << " ";
+    oss << DocumentedObject::doc() << " ";
     oss << "type=" << demangle(info.dataType.c_str()) << ", dir=" << behaviorNames[info.behavior] << ", connected=" << std::to_string(info.connected) << ", ptr=" << info.buffer_ptr;
     return oss.str();
   }
@@ -89,7 +88,7 @@ public:
     }
     else
     {
-      throw std::runtime_error("error in " + std::string(__FUNCTION__) + " buffer \"" + describe() + " fails to connect to " + other.describe());
+      throw std::runtime_error("error in " + std::string(__FUNCTION__) + " buffer \"" + doc() + " fails to connect to " + other.doc());
     }
   }
 
