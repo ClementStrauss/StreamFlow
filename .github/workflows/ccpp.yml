@@ -26,7 +26,7 @@ jobs:
         cache-name: cache-conan
       with:
         # npm cache files are stored in `~/.npm` on Linux/macOS
-        path: ~/.conan
+        path: /home/runner/.conan/
         key: theKey
         
     - name: configure
