@@ -9,8 +9,15 @@ jobs:
     
     steps:
     - uses: actions/checkout@v2
-    - name: install
-      run: pip install --user wheel conan
+    - name: Download Conan package manager
+      run: |
+           pwd
+           pip3 install wheel setuptools
+           pip3 install conan
+           export PATH=$PATH:/home/runner/.local/bin
+           echo $PATH
+           conan --version
+           ls
     - name: configure
       run: conan install . --build missing; cmake .
     - name: make
