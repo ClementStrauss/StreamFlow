@@ -21,7 +21,7 @@ jobs:
            sudo ln -s ~/.local/bin/conan /usr/local/bin/conan
 
     - name: configure
-      run: conan install . --build missing; cmake .
+      run: conan install .; cmake .
     - name: make
       run: make
     
