@@ -20,19 +20,19 @@ jobs:
            ls
            sudo ln -s ~/.local/bin/conan /usr/local/bin/conan
 
-
-        
-    - name: configure
-      run: conan install . --build; cmake .
-    
     - name: Cache
       uses: actions/cache@v2
       env:
         cache-name: cache-conan
       with:
         # npm cache files are stored in `~/.npm` on Linux/macOS
-        path: ~/.conan
+        path: /home/runner/.conan/
         key: theKey
+        
+    - name: configure
+      run: conan install . --build; cmake .
+    
+   
       
     - name: make
       run: make
