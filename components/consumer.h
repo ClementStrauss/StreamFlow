@@ -4,23 +4,18 @@
 #include "ComponentFactory.h"
 #include "Ports.h"
 
-namespace StreamFlow
-{
+namespace StreamFlow {
 
-class ConsumerComponent : public ComponentBase
-{
+class ConsumerComponent : public ComponentBase {
 public:
-  ConsumerComponent()
-    : ComponentBase("consumer", "This is a consumer")
-  {
+  ConsumerComponent() : ComponentBase("consumer", "This is a consumer") {
     exposeIO(in);
   }
 
   void init() override {}
   void step() override { consume(); }
 
-  void consume()
-  {
+  void consume() {
 
     auto value = in.read();
     std::cout << name() + " reads " << value.operator*() << std::endl;
@@ -29,25 +24,22 @@ public:
       status = componentStatus::done;
   }
 
-  StreamFlow::Input<std::unique_ptr<int>> in{ "in", "consume int every 0.1 second and cout value" };
+  StreamFlow::Input<std::unique_ptr<int>> in{
+      "in", "consume int every 0.1 second and cout value"};
 };
 
 REGISTER_IN_FACTORY(ConsumerComponent);
 
-class ConsumerComponentINT : public ComponentBase
-{
+class ConsumerComponentINT : public ComponentBase {
 public:
-  ConsumerComponentINT()
-    : ComponentBase("consumerINT", "This is a consumer")
-  {
+  ConsumerComponentINT() : ComponentBase("consumerINT", "This is a consumer") {
     exposeIO(in);
   }
 
   void init() override {}
   void step() override { consume(); }
 
-  void consume()
-  {
+  void consume() {
 
     auto value = in.read();
     std::cout << name() + " reads " << value << std::endl;
@@ -59,24 +51,21 @@ public:
       status = componentStatus::done;
   }
 
-  StreamFlow::Input<int> in{ "in", "consume int every 0.1 second and cout value" };
+  StreamFlow::Input<int> in{"in",
+                            "consume int every 0.1 second and cout value"};
 };
 
 REGISTER_IN_FACTORY(ConsumerComponentINT);
 
-template<typename T>
-class ConsumerComponentTemplate : public ComponentBase
-{
+template <typename T> class ConsumerComponentTemplate : public ComponentBase {
 public:
   ConsumerComponentTemplate()
-    : ComponentBase("consumer", "This is a consumer")
-  {
+      : ComponentBase("consumer", "This is a consumer") {
     exposeIO(&in);
   }
 
   ConsumerComponentTemplate(std::string name)
-    : ComponentBase(name, "This is a consumer")
-  {
+      : ComponentBase(name, "This is a consumer") {
     setName(name);
     exposeIO(in);
   }
@@ -84,8 +73,7 @@ public:
   void init() override {}
   void step() override { consume(); }
 
-  void consume()
-  {
+  void consume() {
 
     auto value = in.read();
     std::cout << name() + " reads " << value << std::endl;
@@ -94,10 +82,11 @@ public:
     //              break;
   }
 
-  StreamFlow::Input<T> in{ "in", "consume int every 0.1 second and cout value" };
+  StreamFlow::Input<T> in{"in", "consume int every 0.1 second and cout value"};
 };
 
 REGISTER_IN_FACTORY_WITH_NAME(ConsumerComponentTemplate<float>, consumerFloat);
-REGISTER_IN_FACTORY_WITH_NAME(ConsumerComponentTemplate<double>, consumerDouble);
+REGISTER_IN_FACTORY_WITH_NAME(ConsumerComponentTemplate<double>,
+                              consumerDouble);
 REGISTER_IN_FACTORY_WITH_NAME(ConsumerComponentTemplate<short>, consumerShort);
-}
+} // namespace StreamFlow

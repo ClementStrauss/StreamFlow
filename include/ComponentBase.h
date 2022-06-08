@@ -8,11 +8,9 @@
 #include <sstream>
 #include <string>
 
-namespace StreamFlow
-{
+namespace StreamFlow {
 
-enum componentStatus
-{
+enum componentStatus {
   running,
   done,
   paused,
@@ -20,69 +18,62 @@ enum componentStatus
 
 };
 
-class ComponentBase : public DocumentedObject
-{
+class ComponentBase : public DocumentedObject {
 public:
   ComponentBase() = delete;
-  ComponentBase(std::string name, std::string description)
-  {
+  ComponentBase(std::string name, std::string description) {
     setName(name);
     setDescription(description);
   }
-  virtual ~ComponentBase() override
-  {
+  virtual ~ComponentBase() override {
     portsMap.clear();
-    std::cout << "ComponentBase delete " << name() << std::endl;
+    std::cout << "ComponentBase deleted " << name() << std::endl;
   }
 
   virtual void init() = 0;
   virtual void step() = 0;
 
-  void exposeIO(StreamFlow::IO_base& io_ptr)
-  {
+  void exposeIO(StreamFlow::IO_base &io_ptr) {
     io_ptr.markExposed();
     portsMap[io_ptr.name()] = &io_ptr;
   }
 
-  template<typename T>
-  StreamFlow::Input<T> createInput(std::string desc)
-  {
-    StreamFlow::Input<T> port{ "", desc };
+  template <typename T> StreamFlow::Input<T> createInput(std::string desc) {
+    StreamFlow::Input<T> port{"", desc};
     exposeIO(port);
     return port;
   }
 
-  std::string doc() const override
-  {
+  std::string doc() const override {
 
     std::ostringstream oss;
     oss << ">>>" << std::endl;
     oss << DocumentedObject::doc() << std::endl;
     oss << "Exposed ports :" << std::endl;
-    for (auto& p : portsMap)
-    {
+    for (auto &p : portsMap) {
       oss << p.second->doc() << std::endl;
     }
     oss << "<<<" << std::endl;
     return oss.str();
   }
 
-  StreamFlow::IO_base* getFromMap(std::string key)
-  {
+  StreamFlow::IO_base *getFromMap(std::string key) {
     auto val_iter = portsMap.find(key);
     if (val_iter != portsMap.end())
       return portsMap[key];
     else
-      throw std::out_of_range("port " + key + " unknown (check port name, and call to expose(port))");
+      throw std::out_of_range(
+          "port " + key +
+          " unknown (check port name, and call to expose(port))");
   }
 
-  StreamFlow::IO_base& operator[](std::string key) { return *getFromMap(key); }
+  StreamFlow::IO_base &operator[](std::string key) { return *getFromMap(key); }
 
-  componentStatus status{ not_started };
+  componentStatus status{not_started};
 
 private:
-  std::map<std::string, StreamFlow::IO_base*> portsMap;
+  std::map<std::string, StreamFlow::IO_base *> portsMap;
 };
-}
+} // namespace StreamFlow
 
 #endif // COMPONENTBASE_H

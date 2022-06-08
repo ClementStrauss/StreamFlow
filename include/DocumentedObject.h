@@ -3,16 +3,13 @@
 #include <sstream>
 #include <string>
 
-namespace StreamFlow
-{
+namespace StreamFlow {
 
-class DocumentedObject
-{
+class DocumentedObject {
 public:
   std::string name() const noexcept { return objectName; }
   std::string getObjectDocString() const noexcept { return docString; }
-  virtual std::string doc() const
-  {
+  virtual std::string doc() const {
     std::ostringstream oss;
     oss << "name=" << objectName << ", desc=" << docString << " ";
     return oss.str();
@@ -26,5 +23,5 @@ private:
   std::string objectName = "no_name";
   std::string docString = "no_desc";
 };
-}
+} // namespace StreamFlow
 #endif // OBJECT_BASE_H
