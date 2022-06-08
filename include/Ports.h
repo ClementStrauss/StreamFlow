@@ -1,5 +1,6 @@
 #ifndef BUFFER_H
 #define BUFFER_H
+
 #include <condition_variable>
 #include <cstdlib>
 #include <cxxabi.h>
@@ -18,10 +19,11 @@
 namespace StreamFlow {
 
 enum IOBehavior { input, output, parameter, undefined };
+
 static std::string behaviorNames[] = {"input", "output", "parameter",
                                       "undefined"};
 
-std::string demangle(const char *name) {
+static std::string demangle(const char *name) {
   int status = -4; // some arbitrary value to eliminate the compiler warning
   std::unique_ptr<char, void (*)(void *)> res{
       abi::__cxa_demangle(name, nullptr, nullptr, &status), std::free};
