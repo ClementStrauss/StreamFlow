@@ -32,3 +32,14 @@
 *.app
 /CMakeLists.txt.user
 /build/
+/.cmake/**
+/.*
+/CMakeCache.txt
+/CMakeFiles/**
+/Makefile
+/StreamFlow
+/CMakeCache.txt.prev
+/qtcsettings.cmake
+/cmake_install.cmake
+/cmake-build-release/**
+/Testing/Temporary/LastTest.log
