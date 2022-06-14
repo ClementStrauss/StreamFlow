@@ -5,6 +5,7 @@
 #include "Ports.h"
 
 #include "opencv2/objdetect.hpp"
+#include "registeredComponent.h"
 #include <iostream>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
@@ -15,10 +16,10 @@ using namespace cv;
 
 namespace StreamFlow {
 
-class WebcamProducer : public ComponentBase {
+class WebcamProducer : public RegisteredComponent<WebcamProducer> {
 public:
   WebcamProducer()
-      : ComponentBase("WebcamProducer", "This is an image producer") {
+      : RegisteredComponent("WebcamProducer", "This is an image producer") {
     exposeIO(out);
   }
 
@@ -37,9 +38,8 @@ public:
   StreamFlow::Output<std::unique_ptr<int>> out{
       "out", "produce incrementing int every X microseconds"};
   int counter = 0;
-  std::string composentName;
 
-  static FactoryRegistrer<WebcamProducer> registrar;
+  static constexpr std::string_view name{"name"};
 };
 
 } // namespace StreamFlow

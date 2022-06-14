@@ -15,6 +15,7 @@ void Factory::registerNewCreator(Key const &key, Creator const &creator) {
 }
 
 Object Factory::create(Key const &key) {
+  std::cout << "create " << key << std::endl;
   assert(m_creators().count(key) == 1);
   assert(m_creators()[key]);
   return m_creators()[key]();

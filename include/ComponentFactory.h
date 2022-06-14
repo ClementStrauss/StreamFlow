@@ -4,6 +4,7 @@
 #include "ComponentBase.h"
 #include "DocumentedObject.h"
 #include <cassert>
+#include <memory>
 
 namespace StreamFlow {
 
@@ -23,9 +24,9 @@ private:
 
 // std::unordered_map<Key, Creator> Factory::m_creators;
 
-template <typename T> class FactoryRegistrer {
+template <typename T> class FactoryRegistrar {
 public:
-  FactoryRegistrer(std::string key) {
+  FactoryRegistrar(std::string key) {
     Factory::registerNewCreator(key, []() { return std::make_unique<T>(); });
   }
 };
@@ -38,9 +39,20 @@ public:
   }
 };
 
-#define REGISTER_IN_FACTORY(C)                                                 \
-  static FactoryRegistrer<C> C##FACTORY(C().name());
-#define REGISTER_IN_FACTORY_WITH_NAME(C, _NAME)                                \
+#define REGISTER_IN_FACTORY_OLD(C)                                             \
+  static FactoryRegistrar<C> C##FACTORY(C().name());
+#define REGISTER_IN_FACTORY_WITH_NAME_OLD(C, _NAME)                            \
   static FactoryRegistrerWithName<C> _NAME##FACTORY_WITH_NAME(#_NAME);
+
+#define REGISTER_IN_FACTORY(C)                                                 \
+  template <>                                                                  \
+  FactoryRegistrar<C> C::RegisteredComponent<C>::registrar =                   \
+      FactoryRegistrar<C>(#C);
+
+#define REGISTER_IN_FACTORY_WITH_NAME(C, _NAME)                                \
+  template <>                                                                  \
+  FactoryRegistrar<C> C::RegisteredComponent<C>::registrar =                   \
+      FactoryRegistrar<C>(#_NAME);
+
 } // namespace StreamFlow
 #endif // COMPONENTFACTORY_H

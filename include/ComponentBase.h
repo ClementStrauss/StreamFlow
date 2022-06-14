@@ -71,6 +71,8 @@ public:
 
   componentStatus status{not_started};
 
+  static int reg;
+
 private:
   std::map<std::string, StreamFlow::IO_base *> portsMap;
 };

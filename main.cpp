@@ -17,18 +17,18 @@ int main() {
   Application app("put application name here");
   // add Component (or node) in the app
   app.addNode("WebcamProducer");
-  app.addNode("consumer");
+  app.addNode("ConsumerComponent");
 
   // connect app's components together
-  app["WebcamProducer"]["out"] >> app["consumer"]["in"];
+  app["WebcamProducer"]["out"] >> app["ConsumerComponent"]["in"];
 
-  app.addNode("producerINT");
-  app.addNode("consumerINT");
-  app["producerINT"]["out"] >> app["consumerINT"]["in"];
+  app.addNode("ProducerComponentINT");
+  app.addNode("ConsumerComponentINT");
+  app["ProducerComponentINT"]["out"] >> app["ConsumerComponentINT"]["in"];
 
   // ask for component port documentation
   std::cout << app["WebcamProducer"]["out"].doc() << std::endl;
-  std::cout << app["consumer"]["in"].doc() << std::endl;
+  std::cout << app["ConsumerComponent"]["in"].doc() << std::endl;
 
   // describe the application
   std::cout << app.doc() << std::endl;
