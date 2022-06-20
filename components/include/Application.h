@@ -47,6 +47,12 @@ public:
   }
 
   void run() {
+
+    for (auto &component : instanciated_components_map) {
+      std::cout << "init of " << component.first << std::endl;
+      component.second.get()->init();
+    }
+
     for (auto &component : instanciated_components_map) {
       threads[component.first] = std::thread([&]() {
         component.second.get()->status = componentStatus::running;

@@ -29,7 +29,9 @@ public:
     exposeIO(in);
   }
 
-  void init() override {}
+  void init() override {
+      namedWindow("Display window");
+  }
   void step() override { display(); }
 
 private:
@@ -37,6 +39,7 @@ private:
 
   void display() {
       Mat image = *(in.read());
+      cout << image.cols << " " << image.rows << endl;
      // imwrite("test.jpg", *image);
       imshow("Display window", image);
       waitKey(1);

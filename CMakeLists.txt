@@ -9,9 +9,12 @@ project(
   LANGUAGES CXX)
 
 
-  find_package(OpenCV REQUIRED)
-  include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
 
+include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
+
+
+
+find_package(OpenCV REQUIRED)
 
 set(CMAKE_CXX_STANDARD 17)
 

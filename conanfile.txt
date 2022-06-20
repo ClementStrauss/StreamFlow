@@ -5,8 +5,8 @@ spdlog/1.10.0
 
 [options]
 opencv:shared=False
-opencv:with_v4l=False
-opencv:nonfree=True
+opencv:with_v4l=True
+opencv:nonfree=False
 opencv:with_ffmpeg=False
 opencv:with_gtk=True
 

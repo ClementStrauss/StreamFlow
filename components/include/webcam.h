@@ -23,9 +23,10 @@ public:
   }
 
   void init() override {
-    cap.open(0);
+    cap.open(0, CAP_V4L2);
+      cout << "open camera" << endl;
     if (!cap.isOpened()) {
-      cout << "cannot open camera";
+      cout << "cannot open camera"<< endl;
     }
   }
   void step() override { produce(); }
@@ -35,13 +36,16 @@ private:
 
   void produce() {
     Mat image;
-    cap >> image;
-    auto ptr = std::make_unique<Mat>(image);
+    cap.read(image);
+    auto ptr = std::make_unique<Mat>(image.clone());
     out.write(ptr);
+    cout << "image " << counter++  << " " << image.cols << " " << image.rows << endl;
   }
 
   StreamFlow::Output<std::unique_ptr<Mat>> out{
       "out", "produce incrementing int every X microseconds"};
+
+  int counter = 0;
 };
 
 } // namespace StreamFlow

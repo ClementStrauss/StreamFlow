@@ -21,19 +21,19 @@ int main() {
   // connect app's components together
   app["WebcamProducer"]["out"] >> app["ImageDisplay"]["in"];
 
-  app.addNode("ProducerComponentINT");
-  app.addNode("ConsumerComponentINT");
-  app["ProducerComponentINT"]["out"] >> app["ConsumerComponentINT"]["in"];
+////  app.addNode("ProducerComponent");
+////  app.addNode("ConsumerComponent");
+////  app["ProducerComponent"]["out"] >> app["ConsumerComponent"]["in"];
 
-  // ask for component port documentation
-  std::cout << app["WebcamProducer"]["out"].doc() << std::endl;
-  std::cout << app["ImageDisplay"]["in"].doc() << std::endl;
+//  // ask for component port documentation
+//  std::cout << app["WebcamProducer"]["out"].doc() << std::endl;
+//  std::cout << app["ImageDisplay"]["in"].doc() << std::endl;
 
-  // describe the application
-  std::cout << app.doc() << std::endl;
+//  // describe the application
+//  std::cout << app.doc() << std::endl;
 
-  // describe a component
-  std::cout << app["WebcamProducer"].doc() << std::endl;
+//  // describe a component
+//  std::cout << app["WebcamProducer"].doc() << std::endl;
 
   // run the application, enjoy pipeline and parallelism;
   app.run();
