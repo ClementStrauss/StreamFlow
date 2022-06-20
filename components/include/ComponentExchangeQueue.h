@@ -9,7 +9,10 @@
 
 namespace StreamFlow {
 
-class Queue_Base : public DocumentedObject {};
+class Queue_Base : public DocumentedObject {
+public:
+  virtual size_t size() = 0;
+};
 
 template <typename T, int maxSize = 8>
 class ComponentExchangeQueue : public Queue_Base {
@@ -38,7 +41,7 @@ public:
     readableCondition_.notify_all();
   }
 
-  size_t size() const {
+  size_t size() {
     std::lock_guard<std::mutex> lock(mutex_);
     return queue_.size();
   }

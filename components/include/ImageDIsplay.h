@@ -8,14 +8,12 @@
 #include "opencv2/objdetect.hpp"
 #include "registeredComponent.h"
 #include <iostream>
-#include <opencv2/highgui.hpp>
-#include <opencv2/imgproc.hpp>
-#include <opencv2/videoio.hpp>
-#include <opencv2/opencv.hpp>
 #include <opencv2/core.hpp>
-#include <opencv2/imgcodecs.hpp>
 #include <opencv2/highgui.hpp>
-
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/opencv.hpp>
+#include <opencv2/videoio.hpp>
 
 using namespace std;
 using namespace cv;
@@ -25,24 +23,25 @@ namespace StreamFlow {
 class ImageDisplay : public RegisteredComponent<ImageDisplay> {
 public:
   ImageDisplay()
-      : RegisteredComponent("ImageDisplay", "This is an image display for OpenCV") {
+      : RegisteredComponent("ImageDisplay",
+                            "This is an image display for OpenCV") {
     exposeIO(in);
   }
 
-  void init() override {
-      namedWindow("Display window");
-  }
+  void init() override { namedWindow("Display window"); }
   void step() override { display(); }
 
 private:
   VideoCapture cap;
 
   void display() {
-      Mat image = *(in.read());
-      cout << image.cols << " " << image.rows << endl;
-     // imwrite("test.jpg", *image);
-      imshow("Display window", image);
-      waitKey(1);
+    cout << in.getElementNumber() << endl;
+
+    Mat image = *(in.read());
+    // cout << image.cols << " " << image.rows << endl;
+    // imwrite("test.jpg", *image);
+    imshow("Display window", image);
+    waitKey(60);
     //  std::this_thread::sleep_for(std::chrono::microseconds(100));
   }
 
@@ -51,6 +50,5 @@ private:
 };
 
 } // namespace StreamFlow
-
 
 #endif // IMAGEDISPLAY_H

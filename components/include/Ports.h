@@ -51,6 +51,10 @@ public:
   bool isUsable() const {
     return isConnected() && isBufferValid() && isExposed();
   }
+  size_t getElementNumber()
+  {
+      return buffer_ptr->size();
+  }
 
   std::string doc() const override final {
     std::ostringstream oss;
