@@ -1,4 +1,5 @@
 #include "ComponentFactory.h"
+#include "allComponentIncludes.h"
 
 namespace StreamFlow {
 

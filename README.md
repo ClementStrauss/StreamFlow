@@ -18,17 +18,26 @@ Every modules and IO are self documented by design
 
 pip install conan
 
+sudo apt-get install libavcodec-dev libavformat-dev libswscale-dev
+sudo apt-get install libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev
+sudo apt-get install libgtk-3-dev
 
-sudo apt install libgtk2.0-dev libva-dev libvdpau-dev libx11-dev
+sudo apt-get install libpng-dev
+sudo apt-get install libjpeg-dev
+sudo apt-get install libopenexr-dev
+sudo apt-get install libtiff-dev
+sudo apt-get install libwebp-dev
+
+https://github.com/conan-io/conan-center-index/blob/master/recipes/opencv/4.x/conanfile.py
+https://gitlab.com/CLIUtils/modern-cmake/tree/master/examples/extended-project
 
 
-sudo apt install libx11-dev  libx11-xcb-dev libfontenc-dev libice-dev libsm-dev libxau-dev libxaw7-dev libxcomposite-dev libxcursor-dev libxdamage-dev libxdmcp-dev libxext-dev libxfixes-dev libxi-dev libxinerama-dev libxkbfile-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxrender-dev libxres-dev libxss-dev libxt-dev libxtst-dev libxv-dev libxvmc-dev libxxf86vm-devxtrans-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-xinerama0-dev xkb-data libxcb-dri3-dev uuid-dev libxcb-util-dev
+mkdir build && cd build
+conan install .. --build missing
+cmake .. -DCMAKE_BUILD_TYPE=release
 
-
-conan install . --install-folder cmake-build-release --build=missing
-
-cmake . -DCMAKE_TOOLCHAIN_FILE=cmake-build-release/conan_toolchain.cmake -DCMAKE_BUILD_TYPE=debug 
 
 # Build
 
 cmake --build . 
+cmake --build . -v

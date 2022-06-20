@@ -2,8 +2,15 @@
 opencv/4.5.5
 spdlog/1.10.0
 
-[generators]
-CMakeDeps
-CMakeToolchain
 
+[options]
+opencv:shared=False
+opencv:with_v4l=False
+opencv:nonfree=True
+opencv:with_ffmpeg=False
+opencv:with_gtk=True
+
+[generators]
+cmake_find_package
+cmake_paths
 

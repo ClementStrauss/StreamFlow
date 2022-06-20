@@ -2,4 +2,4 @@
 #include "consumer.h"
 #include "producer.h"
 
-#include "webcam/webcam.h"
+#include "webcam.h"

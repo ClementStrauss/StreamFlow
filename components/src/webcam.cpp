@@ -14,3 +14,4 @@ int WebcamProducer::ComponentBase::reg =
     WebcamProducer::registerInFactory("WebcamProducer3");
 
 } // namespace StreamFlow
+

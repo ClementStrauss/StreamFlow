@@ -4,12 +4,11 @@
 #include "ComponentFactory.h"
 #include "Ports.h"
 
-#include "opencv2/objdetect.hpp"
 #include "registeredComponent.h"
 #include <iostream>
-#include <opencv2/highgui.hpp>
-#include <opencv2/imgproc.hpp>
+#include <opencv2/core.hpp>
 #include <opencv2/videoio.hpp>
+#include <opencv2/highgui.hpp>
 
 using namespace std;
 using namespace cv;
@@ -23,23 +22,26 @@ public:
     exposeIO(out);
   }
 
-  void init() override {}
-  void step() override { produce(); }
-
-  void produce() {
-    if (counter < 1000) {
-      auto ptr = std::make_unique<int>(counter);
-      out.write(ptr);
-      counter++;
-      //  std::this_thread::sleep_for(std::chrono::microseconds(100));
+  void init() override {
+    cap.open(0);
+    if (!cap.isOpened()) {
+      cout << "cannot open camera";
     }
   }
+  void step() override { produce(); }
 
-  StreamFlow::Output<std::unique_ptr<int>> out{
+private:
+  VideoCapture cap;
+
+  void produce() {
+    Mat image;
+    cap >> image;
+    auto ptr = std::make_unique<Mat>(image);
+    out.write(ptr);
+  }
+
+  StreamFlow::Output<std::unique_ptr<Mat>> out{
       "out", "produce incrementing int every X microseconds"};
-  int counter = 0;
-
-  static constexpr std::string_view name{"name"};
 };
 
 } // namespace StreamFlow
