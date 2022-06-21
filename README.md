@@ -32,12 +32,10 @@ https://github.com/conan-io/conan-center-index/blob/master/recipes/opencv/4.x/co
 https://gitlab.com/CLIUtils/modern-cmake/tree/master/examples/extended-project
 
 
+
 mkdir build && cd build
+conan profile update settings.compiler.libcxx=libstdc++11 default
 conan install .. --build missing
 cmake .. -DCMAKE_BUILD_TYPE=release
+cmake --build .. -v
 
-
-# Build
-
-cmake --build . 
-cmake --build . -v
