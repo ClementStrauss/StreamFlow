@@ -6,6 +6,8 @@ file(GLOB HEADER_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/components/includ
 
 file(GLOB SRC_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/components/src/*.cpp")
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 find_package(OpenCV REQUIRED)
 
 include(${CMAKE_BINARY_DIR}/conan_paths.cmake)

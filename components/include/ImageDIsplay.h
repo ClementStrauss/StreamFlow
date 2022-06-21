@@ -35,11 +35,9 @@ private:
   VideoCapture cap;
 
   void display() {
-    cout << in.getElementNumber() << endl;
-
+    //    cout << in.getElementNumber() << endl;
     Mat image = *(in.read());
-    // cout << image.cols << " " << image.rows << endl;
-    // imwrite("test.jpg", *image);
+
     imshow("Display window", image);
     waitKey(60);
     //  std::this_thread::sleep_for(std::chrono::microseconds(100));
