@@ -1,12 +1,13 @@
 #ifndef COMPONENTBASE_H
 #define COMPONENTBASE_H
 
-#include "DocumentedObject.h"
-#include "Ports.h"
 #include <map>
 #include <memory>
 #include <sstream>
 #include <string>
+
+#include "DocumentedObject.h"
+#include "Ports.h"
 
 namespace StreamFlow {
 
@@ -19,7 +20,7 @@ enum componentStatus {
 };
 
 class ComponentBase : public DocumentedObject {
-public:
+ public:
   ComponentBase() = delete;
   ComponentBase(std::string name, std::string description) {
     setName(name);
@@ -38,14 +39,14 @@ public:
     portsMap[io_ptr.name()] = &io_ptr;
   }
 
-  template <typename T> StreamFlow::Input<T> createInput(std::string desc) {
+  template <typename T>
+  StreamFlow::Input<T> createInput(std::string desc) {
     StreamFlow::Input<T> port{"", desc};
     exposeIO(port);
     return port;
   }
 
   std::string doc() const override {
-
     std::ostringstream oss;
     oss << ">>>" << std::endl;
     oss << DocumentedObject::doc() << std::endl;
@@ -62,9 +63,7 @@ public:
     if (val_iter != portsMap.end())
       return portsMap[key];
     else
-      throw std::out_of_range(
-          "port " + key +
-          " unknown (check port name, and call to expose(port))");
+      throw std::out_of_range("port " + key + " unknown (check port name, and call to expose(port))");
   }
 
   StreamFlow::IO_base &operator[](std::string key) { return *getFromMap(key); }
@@ -73,9 +72,9 @@ public:
 
   static int reg;
 
-private:
+ private:
   std::map<std::string, StreamFlow::IO_base *> portsMap;
 };
-} // namespace StreamFlow
+}  // namespace StreamFlow
 
-#endif // COMPONENTBASE_H
+#endif  // COMPONENTBASE_H

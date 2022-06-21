@@ -1,9 +1,10 @@
 #ifndef BUFFER_H
 #define BUFFER_H
 
+#include <cxxabi.h>
+
 #include <condition_variable>
 #include <cstdlib>
-#include <cxxabi.h>
 #include <functional>
 #include <iostream>
 #include <memory>
@@ -20,13 +21,11 @@ namespace StreamFlow {
 
 enum IOBehavior { input, output, parameter, undefined };
 
-static std::string behaviorNames[] = {"input", "output", "parameter",
-                                      "undefined"};
+static std::string behaviorNames[] = {"input", "output", "parameter", "undefined"};
 
 static std::string demangle(const char *name) {
-  int status = -4; // some arbitrary value to eliminate the compiler warning
-  std::unique_ptr<char, void (*)(void *)> res{
-      abi::__cxa_demangle(name, nullptr, nullptr, &status), std::free};
+  int status = -4;  // some arbitrary value to eliminate the compiler warning
+  std::unique_ptr<char, void (*)(void *)> res{abi::__cxa_demangle(name, nullptr, nullptr, &status), std::free};
 
   return (status == 0) ? res.get() : name;
 }
@@ -42,43 +41,29 @@ struct IOInformation {
 };
 
 class IO_base : public DocumentedObject {
-public:
+ public:
   // IO_base() = delete;
 
   bool isConnected() const { return info.connected; }
   bool isBufferValid() const { return buffer_ptr != nullptr; }
   bool isExposed() const { return info.exposed; }
-  bool isUsable() const {
-    return isConnected() && isBufferValid() && isExposed();
-  }
-  size_t getElementNumber()
-  {
-      return buffer_ptr->size();
-  }
+  bool isUsable() const { return isConnected() && isBufferValid() && isExposed(); }
+  size_t getElementNumber() { return buffer_ptr->size(); }
 
   std::string doc() const override final {
     std::ostringstream oss;
     oss << DocumentedObject::doc() << " ";
-    oss << "type=" << demangle(info.dataType.c_str())
-        << ", dir=" << behaviorNames[info.behavior]
-        << ", connected=" << std::to_string(info.connected)
-        << ", ptr=" << info.buffer_ptr;
+    oss << "type=" << demangle(info.dataType.c_str()) << ", dir=" << behaviorNames[info.behavior] << ", connected=" << std::to_string(info.connected) << ", ptr=" << info.buffer_ptr;
     return oss.str();
   }
 
   void markExposed(bool status = true) { info.exposed = status; }
 
   void connect(IO_base &other) {
-    if (info.behavior == other.info.behavior && info.behavior != parameter)
-      throw std::runtime_error(
-          "error in " + std::string(__FUNCTION__) +
-          " cannot connect (input,input) nor (output,ouput)");
+    if (info.behavior == other.info.behavior && info.behavior != parameter) throw std::runtime_error("error in " + std::string(__FUNCTION__) + " cannot connect (input,input) nor (output,ouput)");
 
     if (info.dataTypeHashCode != other.info.dataTypeHashCode)
-      throw std::runtime_error("error in " + std::string(__FUNCTION__) +
-                               " cannot connect " +
-                               demangle(info.dataType.c_str()) + " with " +
-                               demangle(other.info.dataType.c_str()));
+      throw std::runtime_error("error in " + std::string(__FUNCTION__) + " cannot connect " + demangle(info.dataType.c_str()) + " with " + demangle(other.info.dataType.c_str()));
 
     if (buffer_ptr != nullptr || other.buffer_ptr != nullptr) {
       if (other.buffer_ptr == nullptr)
@@ -91,9 +76,7 @@ public:
       info.buffer_ptr = buffer_ptr.get();
       other.info.buffer_ptr = buffer_ptr.get();
     } else {
-      throw std::runtime_error("error in " + std::string(__FUNCTION__) +
-                               " buffer \"" + doc() + " fails to connect to " +
-                               other.doc());
+      throw std::runtime_error("error in " + std::string(__FUNCTION__) + " buffer \"" + doc() + " fails to connect to " + other.doc());
     }
   }
 
@@ -105,13 +88,14 @@ public:
 
   void operator+(IO_base &other) { connect(other); }
 
-protected:
+ protected:
   IOInformation info;
   std::shared_ptr<Queue_Base> buffer_ptr = nullptr;
 };
 
-template <typename T> class IO : public IO_base {
-public:
+template <typename T>
+class IO : public IO_base {
+ public:
   IO() = delete;
   IO(IOBehavior behavior, std::string name, std::string description) {
     setName(name);
@@ -123,32 +107,23 @@ public:
 
   T read() const {
     if (isUsable())
-      return std::static_pointer_cast<ComponentExchangeQueue<T>>(buffer_ptr)
-          ->read();
+      return std::static_pointer_cast<ComponentExchangeQueue<T>>(buffer_ptr)->read();
     else
-      throw std::runtime_error("error: port not usable in " +
-                               std::string(__FUNCTION__) + " buffer \"" +
-                               name() + "\": not connected");
+      throw std::runtime_error("error: port not usable in " + std::string(__FUNCTION__) + " buffer \"" + name() + "\": not connected");
   }
 
   void write(T &item) {
     if (isUsable())
-      std::static_pointer_cast<ComponentExchangeQueue<T>>(buffer_ptr)
-          ->write(item);
+      std::static_pointer_cast<ComponentExchangeQueue<T>>(buffer_ptr)->write(item);
     else
-      throw std::runtime_error("error: port not usable in " +
-                               std::string(__FUNCTION__) + " buffer \"" +
-                               name() + "\": not connected");
+      throw std::runtime_error("error: port not usable in " + std::string(__FUNCTION__) + " buffer \"" + name() + "\": not connected");
   }
 
   void write(T &&item) {
     if (isUsable())
-      std::static_pointer_cast<ComponentExchangeQueue<T>>(buffer_ptr)
-          ->write(item);
+      std::static_pointer_cast<ComponentExchangeQueue<T>>(buffer_ptr)->write(item);
     else
-      throw std::runtime_error("error: port not usable in " +
-                               std::string(__FUNCTION__) + " buffer \"" +
-                               name() + "\": not connected");
+      throw std::runtime_error("error: port not usable in " + std::string(__FUNCTION__) + " buffer \"" + name() + "\": not connected");
   }
 
   //    std::string describe() const override
@@ -157,42 +132,39 @@ public:
   //        + std::to_string(isUsable());
   //    }
 
-protected:
+ protected:
   void allocateBufferPtr(std::string name) {
-    buffer_ptr = std::static_pointer_cast<Queue_Base>(
-        std::make_shared<ComponentExchangeQueue<T>>(name));
+    buffer_ptr = std::static_pointer_cast<Queue_Base>(std::make_shared<ComponentExchangeQueue<T>>(name));
     info.buffer_ptr = buffer_ptr.get();
   }
 };
 
-template <typename T> class Input : public IO<T> {
-public:
+template <typename T>
+class Input : public IO<T> {
+ public:
   Input() {}
-  Input(std::string name, std::string description)
-      : IO<T>(input, name, description) {
-    DocumentedObject::setName(name);
-  }
+  Input(std::string name, std::string description) : IO<T>(input, name, description) { DocumentedObject::setName(name); }
 };
 
-template <typename T> class Output : public IO<T> {
-public:
+template <typename T>
+class Output : public IO<T> {
+ public:
   Output() = delete;
-  Output(std::string name, std::string description)
-      : IO<T>(output, name, description) {
+  Output(std::string name, std::string description) : IO<T>(output, name, description) {
     DocumentedObject::setName(name);
     IO<T>::allocateBufferPtr(name);
   }
 };
 
-template <typename T> class Parameter : public IO<T> {
-public:
+template <typename T>
+class Parameter : public IO<T> {
+ public:
   Parameter() = delete;
-  Parameter(std::string name, std::string description)
-      : IO<T>(parameter, name, description) {
+  Parameter(std::string name, std::string description) : IO<T>(parameter, name, description) {
     DocumentedObject::setName(name);
     IO<T>::allocateBufferPtr(name);
   }
 };
-} // namespace StreamFlow
+}  // namespace StreamFlow
 
-#endif // BUFFER_H
+#endif  // BUFFER_H

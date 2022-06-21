@@ -9,4 +9,4 @@ namespace StreamFlow {
 REGISTER_IN_FACTORY(ProducerComponent);
 REGISTER_IN_FACTORY(ProducerComponentINT)
 
-} // namespace StreamFlow
+}  // namespace StreamFlow

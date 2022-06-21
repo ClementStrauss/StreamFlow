@@ -2,7 +2,6 @@
 
 namespace StreamFlow {
 
-
 REGISTER_IN_FACTORY(ImageDisplay);
 
-} // namespace StreamFlow
+}  // namespace StreamFlow

@@ -1,12 +1,6 @@
 #ifndef IMAGEDISPLAY_H
 #define IMAGEDISPLAY_H
 
-#include "ComponentBase.h"
-#include "ComponentFactory.h"
-#include "Ports.h"
-
-#include "opencv2/objdetect.hpp"
-#include "registeredComponent.h"
 #include <iostream>
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
@@ -15,23 +9,25 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/videoio.hpp>
 
+#include "ComponentBase.h"
+#include "ComponentFactory.h"
+#include "Ports.h"
+#include "opencv2/objdetect.hpp"
+#include "registeredComponent.h"
+
 using namespace std;
 using namespace cv;
 
 namespace StreamFlow {
 
 class ImageDisplay : public RegisteredComponent<ImageDisplay> {
-public:
-  ImageDisplay()
-      : RegisteredComponent("ImageDisplay",
-                            "This is an image display for OpenCV") {
-    exposeIO(in);
-  }
+ public:
+  ImageDisplay() : RegisteredComponent("ImageDisplay", "This is an image display for OpenCV") { exposeIO(in); }
 
   void init() override { namedWindow("Display window"); }
   void step() override { display(); }
 
-private:
+ private:
   VideoCapture cap;
 
   void display() {
@@ -43,10 +39,9 @@ private:
     //  std::this_thread::sleep_for(std::chrono::microseconds(100));
   }
 
-  StreamFlow::Input<std::unique_ptr<Mat>> in{
-      "in", "produce incrementing int every X microseconds"};
+  StreamFlow::Input<std::unique_ptr<Mat>> in{"in", "produce incrementing int every X microseconds"};
 };
 
-} // namespace StreamFlow
+}  // namespace StreamFlow
 
-#endif // IMAGEDISPLAY_H
+#endif  // IMAGEDISPLAY_H

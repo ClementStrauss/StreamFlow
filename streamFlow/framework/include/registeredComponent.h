@@ -4,13 +4,13 @@
 #include "ComponentBase.h"
 #include "ComponentFactory.h"
 namespace StreamFlow {
-template <class T> class RegisteredComponent : public ComponentBase {
-public:
+template <class T>
+class RegisteredComponent : public ComponentBase {
+ public:
   RegisteredComponent() = delete;
-  RegisteredComponent(std::string name, std::string description)
-      : ComponentBase(name, description) {}
+  RegisteredComponent(std::string name, std::string description) : ComponentBase(name, description) {}
 
-public:
+ public:
   static FactoryRegistrar<T> registrar;
 
   static int registerInFactory(std::string name) {
@@ -18,5 +18,5 @@ public:
     return 0;
   }
 };
-} // namespace StreamFlow
-#endif // REGISTEREDCOMPONENT_H
+}  // namespace StreamFlow
+#endif  // REGISTEREDCOMPONENT_H

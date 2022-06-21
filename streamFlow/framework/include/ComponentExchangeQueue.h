@@ -1,22 +1,23 @@
 #ifndef COMPONENTEXCHANGEQUEUE_H
 #define COMPONENTEXCHANGEQUEUE_H
 
-#include "DocumentedObject.h"
 #include <condition_variable>
 #include <iostream>
 #include <mutex>
 #include <queue>
 
+#include "DocumentedObject.h"
+
 namespace StreamFlow {
 
 class Queue_Base : public DocumentedObject {
-public:
+ public:
   virtual size_t size() = 0;
 };
 
 template <typename T, int maxSize = 8>
 class ComponentExchangeQueue : public Queue_Base {
-public:
+ public:
   T read() {
     std::unique_lock<std::mutex> mlock(mutex_);
     // always check if readable and wait for signal if necessary
@@ -47,15 +48,11 @@ public:
   }
 
   ComponentExchangeQueue(std::string name) { setName(name); }
-  ComponentExchangeQueue(const ComponentExchangeQueue &) =
-      delete; // disable copying
-  ComponentExchangeQueue &
-  operator=(const ComponentExchangeQueue &) = delete; // disable assignment
-  ~ComponentExchangeQueue() {
-    std::cout << "delete buffer" << this->name() << std::endl;
-  }
+  ComponentExchangeQueue(const ComponentExchangeQueue &) = delete;             // disable copying
+  ComponentExchangeQueue &operator=(const ComponentExchangeQueue &) = delete;  // disable assignment
+  ~ComponentExchangeQueue() { std::cout << "delete buffer" << this->name() << std::endl; }
 
-private:
+ private:
   std::queue<T> queue_;
   mutable std::mutex mutex_;
   std::condition_variable readableCondition_;
@@ -65,34 +62,28 @@ private:
 // class decorator with extended logs
 template <typename T, int maxSize = 8>
 class ComponentExchangeQueueDebug : public ComponentExchangeQueue<T, maxSize> {
-public:
+ public:
   using Base = ComponentExchangeQueue<T, maxSize>;
   ComponentExchangeQueueDebug() {
     std::cout << "create queue " << this << std::endl;
     Base();
   }
-  ~ComponentExchangeQueueDebug() {
-    std::cout << "delete queue " << this << std::endl;
-  }
+  ~ComponentExchangeQueueDebug() { std::cout << "delete queue " << this << std::endl; }
 
   T read() {
-    std::cout << "try read queue " << this << " occupation(before)= " << size()
-              << std::endl;
+    std::cout << "try read queue " << this << " occupation(before)= " << size() << std::endl;
     return Base::read();
-    std::cout << "succes read queue " << this
-              << " occupation(after)= " << Base::size() << std::endl;
+    std::cout << "succes read queue " << this << " occupation(after)= " << Base::size() << std::endl;
   }
 
   void write(const T &item) {
-    std::cout << "try write queue " << this
-              << " occupation(before)= " << Base::size() << std::endl;
+    std::cout << "try write queue " << this << " occupation(before)= " << Base::size() << std::endl;
     Base::write(item);
-    std::cout << "succes write queue " << this
-              << " occupation(after)= " << Base::size() << std::endl;
+    std::cout << "succes write queue " << this << " occupation(after)= " << Base::size() << std::endl;
   }
 
   size_t size() { return Base::size(); }
 };
-} // namespace StreamFlow
+}  // namespace StreamFlow
 
-#endif // COMPONENTEXCHANGEQUEUE_H
+#endif  // COMPONENTEXCHANGEQUEUE_H

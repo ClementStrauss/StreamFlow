@@ -1,4 +1,5 @@
 #include "ComponentFactory.h"
+
 #include "allComponentIncludes.h"
 
 namespace StreamFlow {
@@ -24,18 +25,15 @@ Object Factory::create(Key const &key) {
 
 std::string Factory::describe() {
   std::ostringstream oss;
-  oss << "+++++++++++++++++++++++++++FACTORY++++++++++++++++++++++++++++"
-      << std::endl;
+  oss << "+++++++++++++++++++++++++++FACTORY++++++++++++++++++++++++++++" << std::endl;
   for (auto &componnentCreator : m_creators()) {
-    oss << "registered with key: \"" + componnentCreator.first + "\" :"
-        << std::endl;
+    oss << "registered with key: \"" + componnentCreator.first + "\" :" << std::endl;
     auto comp = componnentCreator.second();
     oss << comp->doc();
   }
-  oss << "+++++++++++++++++++++++++END FACTORY+++++++++++++++++++++++++++"
-      << std::endl;
+  oss << "+++++++++++++++++++++++++END FACTORY+++++++++++++++++++++++++++" << std::endl;
 
   return oss.str();
 }
 
-} // namespace StreamFlow
+}  // namespace StreamFlow
