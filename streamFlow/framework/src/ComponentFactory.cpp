@@ -1,7 +1,5 @@
 #include "ComponentFactory.h"
 
-#include "allComponentIncludes.h"
-
 namespace StreamFlow {
 
 std::unordered_map<Key, Creator> &Factory::m_creators() {

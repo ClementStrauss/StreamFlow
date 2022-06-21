@@ -5,20 +5,28 @@
 #include "Application.h"
 #include "ComponentFactory.h"
 #include "Ports.h"
-#include "allComponentIncludes.h"
 
 int main() {
   using namespace StreamFlow;
 
-  std::cout << StreamFlow::Factory::describe() << std::endl;
+  // std::cout << StreamFlow::Factory::describe() << std::endl;
 
   Application app("put application name here");
   // add Component (or node) in the app
   app.addNode("WebcamProducer");
+  app.addNode("sobelX");
+  // app.addNode("sobelY");
+  app.addNode("grayscale");
+
   app.addNode("ImageDisplay");
 
   // connect app's components together
-  app["WebcamProducer"]["out"] >> app["ImageDisplay"]["in"];
+  app["WebcamProducer"]["out"] >> app["grayscale"]["in"];
+  app["grayscale"]["out"] >> app["sobelX"]["in"];
+  app["sobelX"]["out"] >> app["ImageDisplay"]["in"];
+
+  std::cout << "Component documentation " << std::endl;
+  std::cout << StreamFlow::Factory::create("ProducerComponentINT")->doc() << std::endl;
 
   ////  app.addNode("ProducerComponent");
   ////  app.addNode("ConsumerComponent");
@@ -32,7 +40,7 @@ int main() {
   //  std::cout << app.doc() << std::endl;
 
   //  // describe a component
-  //  std::cout << app["WebcamProducer"].doc() << std::endl;
+  // app["WebcamProducer"].doc() << std::endl;
 
   // run the application, enjoy pipeline and parallelism;
   app.run();

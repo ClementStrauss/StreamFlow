@@ -20,9 +20,9 @@ using namespace cv;
 
 namespace StreamFlow {
 
-class ImageDisplay : public RegisteredComponent<ImageDisplay> {
+class ImageDisplay : public FactoryRegisteredComponent<ImageDisplay> {
  public:
-  ImageDisplay() : RegisteredComponent("ImageDisplay", "This is an image display for OpenCV") { exposeIO(in); }
+  ImageDisplay() : FactoryRegisteredComponent("ImageDisplay", "This is an image display for OpenCV") { exposeIO(in); }
 
   void init() override { namedWindow("Display window"); }
   void step() override { display(); }

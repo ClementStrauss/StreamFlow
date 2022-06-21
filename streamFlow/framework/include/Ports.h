@@ -99,7 +99,7 @@ class IO : public IO_base {
   IO() = delete;
   IO(IOBehavior behavior, std::string name, std::string description) {
     setName(name);
-    setDescription(description);
+    setDocString(description);
     info.behavior = behavior;
     info.dataType = typeid(T).name();
     info.dataTypeHashCode = typeid(T).hash_code();
@@ -109,28 +109,22 @@ class IO : public IO_base {
     if (isUsable())
       return std::static_pointer_cast<ComponentExchangeQueue<T>>(buffer_ptr)->read();
     else
-      throw std::runtime_error("error: port not usable in " + std::string(__FUNCTION__) + " buffer \"" + name() + "\": not connected");
+      throw std::runtime_error("error: port not usable in " + std::string(__FUNCTION__) + " buffer \"" + doc() + "\": not connected");
   }
 
   void write(T &item) {
     if (isUsable())
       std::static_pointer_cast<ComponentExchangeQueue<T>>(buffer_ptr)->write(item);
     else
-      throw std::runtime_error("error: port not usable in " + std::string(__FUNCTION__) + " buffer \"" + name() + "\": not connected");
+      throw std::runtime_error("error: port not usable in " + std::string(__FUNCTION__) + " buffer \"" + doc() + "\": not connected");
   }
 
   void write(T &&item) {
     if (isUsable())
       std::static_pointer_cast<ComponentExchangeQueue<T>>(buffer_ptr)->write(item);
     else
-      throw std::runtime_error("error: port not usable in " + std::string(__FUNCTION__) + " buffer \"" + name() + "\": not connected");
+      throw std::runtime_error("error: port not usable in " + std::string(__FUNCTION__) + " buffer \"" + doc() + "\": not connected");
   }
-
-  //    std::string describe() const override
-  //    {
-  //        return name() + ":dir="+ std::to_string(info.direction) + ",usable="
-  //        + std::to_string(isUsable());
-  //    }
 
  protected:
   void allocateBufferPtr(std::string name) {

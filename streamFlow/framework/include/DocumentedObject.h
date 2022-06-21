@@ -7,21 +7,23 @@ namespace StreamFlow {
 
 class DocumentedObject {
  public:
-  std::string name() const noexcept { return objectName; }
-  std::string getObjectDocString() const noexcept { return docString; }
-  virtual std::string doc() const {
-    std::ostringstream oss;
-    oss << "name=" << objectName << ", desc=" << docString << " ";
-    return oss.str();
-  }
   virtual ~DocumentedObject() = default;
 
+  std::string name() const noexcept { return objectName; }
   void setName(std::string aName) noexcept { objectName = aName; }
-  void setDescription(std::string aDesc) noexcept { docString = aDesc; }
+
+  std::string docString() const noexcept { return documentationString; }
+  void setDocString(std::string aDesc) noexcept { documentationString = aDesc; }
+
+  virtual std::string doc() const {
+    std::ostringstream oss;
+    oss << "name=" << objectName << ", desc=" << documentationString << " ";
+    return oss.str();
+  }
 
  private:
   std::string objectName = "no_name";
-  std::string docString = "no_desc";
+  std::string documentationString = "no_desc";
 };
 }  // namespace StreamFlow
 #endif  // OBJECT_BASE_H

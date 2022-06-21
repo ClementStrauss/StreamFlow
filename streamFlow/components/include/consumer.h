@@ -7,9 +7,9 @@
 
 namespace StreamFlow {
 
-class ConsumerComponent : public RegisteredComponent<ConsumerComponent> {
+class ConsumerComponent : public FactoryRegisteredComponent<ConsumerComponent> {
  public:
-  ConsumerComponent() : RegisteredComponent("consumer", "This is a consumer") { exposeIO(in); }
+  ConsumerComponent() : FactoryRegisteredComponent("consumer", "This is a consumer") { exposeIO(in); }
 
   void init() override {}
   void step() override { consume(); }
@@ -25,9 +25,9 @@ class ConsumerComponent : public RegisteredComponent<ConsumerComponent> {
   StreamFlow::Input<std::unique_ptr<int>> in{"in", "consume int every 0.1 second and cout value"};
 };
 
-class ConsumerComponentINT : public RegisteredComponent<ConsumerComponentINT> {
+class ConsumerComponentINT : public FactoryRegisteredComponent<ConsumerComponentINT> {
  public:
-  ConsumerComponentINT() : RegisteredComponent("consumerINT", "This is a consumer") { exposeIO(in); }
+  ConsumerComponentINT() : FactoryRegisteredComponent("consumerINT", "This is a consumer") { exposeIO(in); }
 
   void init() override {}
   void step() override { consume(); }
@@ -49,11 +49,11 @@ class ConsumerComponentINT : public RegisteredComponent<ConsumerComponentINT> {
 // REGISTER_IN_FACTORY(ConsumerComponentINT)
 
 template <typename T>
-class ConsumerComponentTemplate : public RegisteredComponent<ConsumerComponentTemplate<T>> {
+class ConsumerComponentTemplate : public FactoryRegisteredComponent<ConsumerComponentTemplate<T>> {
  public:
-  ConsumerComponentTemplate() : RegisteredComponent<ConsumerComponentTemplate<T>>("consumer", "This is a consumer") { ComponentBase::exposeIO(in); }
+  ConsumerComponentTemplate() : FactoryRegisteredComponent<ConsumerComponentTemplate<T>>("consumer", "This is a consumer") { ComponentBase::exposeIO(in); }
 
-  ConsumerComponentTemplate(std::string name) : RegisteredComponent<ConsumerComponentTemplate<T>>(name, "This is a consumer") {
+  ConsumerComponentTemplate(std::string name) : FactoryRegisteredComponent<ConsumerComponentTemplate<T>>(name, "This is a consumer") {
     DocumentedObject::setName(name);
     ComponentBase::setName(name);
     ComponentBase::exposeIO(in);

@@ -23,14 +23,14 @@ class Factory {
   static std::unordered_map<Key, Creator> &m_creators();
 };
 
-// std::unordered_map<Key, Creator> Factory::m_creators;
-
 template <typename T>
 class FactoryRegistrar {
  public:
   FactoryRegistrar(std::string key) {
+    factoryKey = key;
     Factory::registerNewCreator(key, []() { return std::make_unique<T>(); });
   }
+  std::string factoryKey;
 };
 
 template <typename T>
@@ -41,16 +41,13 @@ class FactoryRegistrerWithName {
   }
 };
 
-#define REGISTER_IN_FACTORY_OLD(C) static FactoryRegistrar<C> C##FACTORY(C().name());
-#define REGISTER_IN_FACTORY_WITH_NAME_OLD(C, _NAME) static FactoryRegistrerWithName<C> _NAME##FACTORY_WITH_NAME(#_NAME);
-
 #define REGISTER_IN_FACTORY(C) \
   template <>                  \
-  FactoryRegistrar<C> C::RegisteredComponent<C>::registrar = FactoryRegistrar<C>(#C);
+  FactoryRegistrar<C> C::FactoryRegisteredComponent<C>::registrar = FactoryRegistrar<C>(#C);
 
 #define REGISTER_IN_FACTORY_WITH_NAME(C, _NAME) \
   template <>                                   \
-  FactoryRegistrar<C> C::RegisteredComponent<C>::registrar = FactoryRegistrar<C>(#_NAME);
+  FactoryRegistrar<C> C::FactoryRegisteredComponent<C>::registrar = FactoryRegistrar<C>(#_NAME);
 
 }  // namespace StreamFlow
 #endif  // COMPONENTFACTORY_H

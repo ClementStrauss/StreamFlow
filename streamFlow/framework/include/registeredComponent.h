@@ -5,10 +5,10 @@
 #include "ComponentFactory.h"
 namespace StreamFlow {
 template <class T>
-class RegisteredComponent : public ComponentBase {
+class FactoryRegisteredComponent : public ComponentBase {
  public:
-  RegisteredComponent() = delete;
-  RegisteredComponent(std::string name, std::string description) : ComponentBase(name, description) {}
+  FactoryRegisteredComponent() = delete;
+  FactoryRegisteredComponent(std::string name, std::string description) : ComponentBase(name, description) {}
 
  public:
   static FactoryRegistrar<T> registrar;
@@ -17,6 +17,8 @@ class RegisteredComponent : public ComponentBase {
     registrar = FactoryRegistrar<T>(name);
     return 0;
   }
+
+  std::string name() const noexcept { return name() + "/" + registrar.factoryKey; }
 };
 }  // namespace StreamFlow
 #endif  // REGISTEREDCOMPONENT_H

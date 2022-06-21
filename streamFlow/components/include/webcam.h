@@ -15,9 +15,9 @@ using namespace cv;
 
 namespace StreamFlow {
 
-class WebcamProducer : public RegisteredComponent<WebcamProducer> {
+class WebcamProducer : public FactoryRegisteredComponent<WebcamProducer> {
  public:
-  WebcamProducer() : RegisteredComponent("WebcamProducer", "This is an image producer") { exposeIO(out); }
+  WebcamProducer() : FactoryRegisteredComponent("WebcamProducer", "This is an image producer") { exposeIO(out); }
 
   void init() override {
     cap.open(0, CAP_V4L2);

@@ -1,6 +1,7 @@
 #ifndef COMPONENTBASE_H
 #define COMPONENTBASE_H
 
+#include <iterator>
 #include <map>
 #include <memory>
 #include <sstream>
@@ -11,24 +12,18 @@
 
 namespace StreamFlow {
 
-enum componentStatus {
-  running,
-  done,
-  paused,
-  not_started
-
-};
+enum componentStatus { running, done, paused, not_started };
 
 class ComponentBase : public DocumentedObject {
  public:
   ComponentBase() = delete;
   ComponentBase(std::string name, std::string description) {
     setName(name);
-    setDescription(description);
+    setDocString(description);
   }
   virtual ~ComponentBase() override {
     portsMap.clear();
-    std::cout << "ComponentBase deleted " << name() << std::endl;
+    std::cout << "ComponentBase: deleted " << name() << std::endl;
   }
 
   virtual void init() = 0;
@@ -40,21 +35,28 @@ class ComponentBase : public DocumentedObject {
   }
 
   template <typename T>
-  StreamFlow::Input<T> createInput(std::string desc) {
-    StreamFlow::Input<T> port{"", desc};
+  StreamFlow::Input<T> createInput(std::string aname, std::string desc) {
+    StreamFlow::Input<T> port{aname, desc};
+    exposeIO(port);
+    return port;
+  }
+
+  template <typename T>
+  StreamFlow::Output<T> createOutput(std::string aname, std::string desc) {
+    StreamFlow::Output<T> port{aname, desc};
     exposeIO(port);
     return port;
   }
 
   std::string doc() const override {
     std::ostringstream oss;
-    oss << ">>>" << std::endl;
+    oss << "<" << name() << ">" << std::endl;
     oss << DocumentedObject::doc() << std::endl;
     oss << "Exposed ports :" << std::endl;
     for (auto &p : portsMap) {
       oss << p.second->doc() << std::endl;
     }
-    oss << "<<<" << std::endl;
+    oss << "</" << name() << ">" << std::endl;
     return oss.str();
   }
 

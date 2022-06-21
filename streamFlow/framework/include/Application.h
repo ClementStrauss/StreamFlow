@@ -17,14 +17,15 @@ class Application final : public DocumentedObject {
  public:
   Application(std::string name = "application", std::string desc = "empty description") {
     DocumentedObject::setName(name);
-    DocumentedObject::setDescription(desc);
+    DocumentedObject::setDocString(desc);
+
 #ifdef __linux__
     pthread_setname_np(pthread_self(),
                        name.c_str());  // set the name, visible in htop
 #endif
   }
 
-  std::string doc() const override { return DocumentedObject::doc(); }
+  // std::string doc() const override { return DocumentedObject::doc(); }
 
   void addComponent(std::string factoryKey, std::string instanceName) {
     if (instanciated_components_map.count(instanceName) != 0)

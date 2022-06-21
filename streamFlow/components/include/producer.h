@@ -7,9 +7,9 @@
 
 namespace StreamFlow {
 
-class ProducerComponent : public RegisteredComponent<ProducerComponent> {
+class ProducerComponent : public FactoryRegisteredComponent<ProducerComponent> {
  public:
-  ProducerComponent() : RegisteredComponent("producer", "This is a producer") { exposeIO(out); }
+  ProducerComponent() : FactoryRegisteredComponent("producer", "This is a producer") { exposeIO(out); }
 
   void init() override {}
   void step() override { produce(); }
@@ -27,9 +27,9 @@ class ProducerComponent : public RegisteredComponent<ProducerComponent> {
   int counter = 0;
 };
 
-class ProducerComponentINT : public RegisteredComponent<ProducerComponentINT> {
+class ProducerComponentINT : public FactoryRegisteredComponent<ProducerComponentINT> {
  public:
-  ProducerComponentINT() : RegisteredComponent("producerINT", "This is a producer") { exposeIO(out); }
+  ProducerComponentINT() : FactoryRegisteredComponent("producerINT", "This is a producer") { exposeIO(out); }
 
   void init() override {}
   void step() override { produce(); }
@@ -44,6 +44,8 @@ class ProducerComponentINT : public RegisteredComponent<ProducerComponentINT> {
   }
   StreamFlow::Output<int> out{"out", "produce incrementing int every X microseconds"};
   int counter = 0;
+
+  StreamFlow::Input<int> out2 = createInput<int>("out2", "desc out2");
 };
 
 }  // namespace StreamFlow
