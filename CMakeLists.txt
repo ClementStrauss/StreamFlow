@@ -27,7 +27,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 
 # The compiled library code is here
-add_subdirectory(components)
+add_subdirectory(streamFlow)
 
 # The executable code is here
 add_subdirectory(apps)

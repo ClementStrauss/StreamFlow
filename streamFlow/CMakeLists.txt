@@ -2,9 +2,9 @@
 # show up in IDEs unless they are listed in add_library.
 
 # Optionally glob, but only for CMake 3.12 or later:
-file(GLOB HEADER_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/components/include/*.h")
+file(GLOB_RECURSE HEADER_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/streamFlow/*.h")
 
-file(GLOB SRC_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/components/src/*.cpp")
+file(GLOB_RECURSE SRC_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/streamFlow/*.cpp")
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -16,7 +16,9 @@ include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
 add_library(streamflow_component_lib SHARED ${SRC_LIST}  ${HEADER_LIST})
 
 # We need this directory, and users of our library will need it too
-target_include_directories(streamflow_component_lib PUBLIC include)
+target_include_directories(streamflow_component_lib PUBLIC framework/include)
+target_include_directories(streamflow_component_lib PUBLIC nodes/include)
+
 
 # This depends on (header only) boost
 target_link_libraries(streamflow_component_lib PRIVATE opencv::opencv pthread)
@@ -26,6 +28,6 @@ target_compile_features(streamflow_component_lib PUBLIC cxx_std_17)
 
 # IDEs should put the headers in a nice place
 source_group(
-  TREE "${PROJECT_SOURCE_DIR}/components/include"
+  TREE "${PROJECT_SOURCE_DIR}/streamFlow/"
   PREFIX "Header Files"
   FILES ${HEADER_LIST})
