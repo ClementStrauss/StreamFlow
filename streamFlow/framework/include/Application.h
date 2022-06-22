@@ -10,6 +10,8 @@
 #include "ComponentBase.h"
 #include "ComponentFactory.h"
 #include "DocumentedObject.h"
+#include "GraphGenerator.h"
+#include "GraphViz.h"
 
 namespace StreamFlow {
 
@@ -33,17 +35,20 @@ class Application final : public DocumentedObject {
 
     instanciated_components_map[instanceName] = StreamFlow::Factory::create(factoryKey);
     instanciated_components_map[instanceName]->setName(instanceName);
+    GraphGenerator::instance().addNode(instanceName);
   }
 
   void addNode(std::string factoryKey) { addComponent(factoryKey, factoryKey); }
 
   StreamFlow::ComponentBase &operator[](std::string key) {
     if (instanciated_components_map.count(key) == 0) throw std::runtime_error(key + " component does not exit");
-
+    std::cout << "acces " + key << std::endl;
+    (instanciated_components_map[key])->setName(key);
     return *(instanciated_components_map[key]);
   }
 
   void run() {
+    GraphGenerator::instance().draw();
     for (auto &component : instanciated_components_map) {
       std::cout << "init of " << component.first << std::endl;
       component.second.get()->init();
@@ -78,6 +83,7 @@ class Application final : public DocumentedObject {
  private:
   std::map<std::string, std::unique_ptr<StreamFlow::ComponentBase>> instanciated_components_map;
   std::map<std::string, std::thread> threads;
+  // initializes instace of a graphviz graph
 };
 
 }  // namespace StreamFlow

@@ -17,7 +17,7 @@ namespace StreamFlow {
 
 class WebcamProducer : public FactoryRegisteredComponent<WebcamProducer> {
  public:
-  WebcamProducer() : FactoryRegisteredComponent("WebcamProducer", "This is an image producer") { exposeIO(out); }
+  WebcamProducer() : FactoryRegisteredComponent("WebcamProducer", "This is an image producer") { exposeIO(*this, out); }
 
   void init() override {
     cap.open(0, CAP_V4L2);

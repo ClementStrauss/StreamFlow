@@ -22,7 +22,7 @@ namespace StreamFlow {
 
 class ImageDisplay : public FactoryRegisteredComponent<ImageDisplay> {
  public:
-  ImageDisplay() : FactoryRegisteredComponent("ImageDisplay", "This is an image display for OpenCV") { exposeIO(in); }
+  ImageDisplay() : FactoryRegisteredComponent("ImageDisplay", "This is an image display for OpenCV") { exposeIO(*this, in); }
 
   void init() override { namedWindow("Display window"); }
   void step() override { display(); }

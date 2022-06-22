@@ -16,8 +16,11 @@
 
 #include "ComponentExchangeQueue.h"
 #include "DocumentedObject.h"
+#include "GraphGenerator.h"
 
 namespace StreamFlow {
+
+class ComponentBase;
 
 enum IOBehavior { input, output, parameter, undefined };
 
@@ -38,6 +41,7 @@ struct IOInformation {
   std::string dataType = "";
   std::string name = "";
   size_t dataTypeHashCode;
+  std::string componentName = "";
 };
 
 class IO_base : public DocumentedObject {
@@ -53,17 +57,20 @@ class IO_base : public DocumentedObject {
   std::string doc() const override final {
     std::ostringstream oss;
     oss << DocumentedObject::doc() << " ";
-    oss << "type=" << demangle(info.dataType.c_str()) << ", dir=" << behaviorNames[info.behavior] << ", connected=" << std::to_string(info.connected) << ", ptr=" << info.buffer_ptr;
+    oss << "type=" << demangle(info.dataType.c_str()) << ", dir=" << behaviorNames[info.behavior] << ", connected=" << std::to_string(info.connected)
+        << ", ptr=" << info.buffer_ptr;
     return oss.str();
   }
 
   void markExposed(bool status = true) { info.exposed = status; }
 
   void connect(IO_base &other) {
-    if (info.behavior == other.info.behavior && info.behavior != parameter) throw std::runtime_error("error in " + std::string(__FUNCTION__) + " cannot connect (input,input) nor (output,ouput)");
+    if (info.behavior == other.info.behavior && info.behavior != parameter)
+      throw std::runtime_error("error in " + std::string(__FUNCTION__) + " cannot connect (input,input) nor (output,ouput)");
 
     if (info.dataTypeHashCode != other.info.dataTypeHashCode)
-      throw std::runtime_error("error in " + std::string(__FUNCTION__) + " cannot connect " + demangle(info.dataType.c_str()) + " with " + demangle(other.info.dataType.c_str()));
+      throw std::runtime_error("error in " + std::string(__FUNCTION__) + " cannot connect " + demangle(info.dataType.c_str()) + " with " +
+                               demangle(other.info.dataType.c_str()));
 
     if (buffer_ptr != nullptr || other.buffer_ptr != nullptr) {
       if (other.buffer_ptr == nullptr)
@@ -78,7 +85,11 @@ class IO_base : public DocumentedObject {
     } else {
       throw std::runtime_error("error in " + std::string(__FUNCTION__) + " buffer \"" + doc() + " fails to connect to " + other.doc());
     }
+
+    grapvizConnect(other);
   }
+
+  void grapvizConnect(IO_base &other) { GraphGenerator::instance().addEdge(this->info.componentName, other.info.componentName); };
 
   void operator&(IO_base &other) { connect(other); }
 
@@ -88,8 +99,9 @@ class IO_base : public DocumentedObject {
 
   void operator+(IO_base &other) { connect(other); }
 
- protected:
   IOInformation info;
+
+ protected:
   std::shared_ptr<Queue_Base> buffer_ptr = nullptr;
 };
 

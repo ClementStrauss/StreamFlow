@@ -9,7 +9,7 @@ namespace StreamFlow {
 
 class ConsumerComponent : public FactoryRegisteredComponent<ConsumerComponent> {
  public:
-  ConsumerComponent() : FactoryRegisteredComponent("consumer", "This is a consumer") { exposeIO(in); }
+  ConsumerComponent() : FactoryRegisteredComponent("consumer", "This is a consumer") { exposeIO(*this, in); }
 
   void init() override {}
   void step() override { consume(); }
@@ -27,7 +27,7 @@ class ConsumerComponent : public FactoryRegisteredComponent<ConsumerComponent> {
 
 class ConsumerComponentINT : public FactoryRegisteredComponent<ConsumerComponentINT> {
  public:
-  ConsumerComponentINT() : FactoryRegisteredComponent("consumerINT", "This is a consumer") { exposeIO(in); }
+  ConsumerComponentINT() : FactoryRegisteredComponent("consumerINT", "This is a consumer") { exposeIO(*this, in); }
 
   void init() override {}
   void step() override { consume(); }
@@ -51,7 +51,9 @@ class ConsumerComponentINT : public FactoryRegisteredComponent<ConsumerComponent
 template <typename T>
 class ConsumerComponentTemplate : public FactoryRegisteredComponent<ConsumerComponentTemplate<T>> {
  public:
-  ConsumerComponentTemplate() : FactoryRegisteredComponent<ConsumerComponentTemplate<T>>("consumer", "This is a consumer") { ComponentBase::exposeIO(in); }
+  ConsumerComponentTemplate() : FactoryRegisteredComponent<ConsumerComponentTemplate<T>>("consumer", "This is a consumer") {
+    ComponentBase::exposeIO(*this, in);
+  }
 
   ConsumerComponentTemplate(std::string name) : FactoryRegisteredComponent<ConsumerComponentTemplate<T>>(name, "This is a consumer") {
     DocumentedObject::setName(name);

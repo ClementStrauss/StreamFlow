@@ -39,8 +39,8 @@ class ImageTransform : public FactoryRegisteredComponent<ImageTransform<Transfor
     // << endl;
   }
 
-  StreamFlow::Input<std::unique_ptr<Mat>> in = ComponentBase::createInput<std::unique_ptr<Mat>>("in", "input image");
-  StreamFlow::Output<std::unique_ptr<Mat>> out = ComponentBase::createOutput<std::unique_ptr<Mat>>("out", "input image");
+  StreamFlow::Input<std::unique_ptr<Mat>> in = ComponentBase::createInput<std::unique_ptr<Mat>>(*this, "in", "input image");
+  StreamFlow::Output<std::unique_ptr<Mat>> out = ComponentBase::createOutput<std::unique_ptr<Mat>>(*this, "out", "input image");
 };
 
 }  // namespace StreamFlow

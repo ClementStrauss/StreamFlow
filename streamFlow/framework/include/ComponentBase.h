@@ -1,6 +1,9 @@
 #ifndef COMPONENTBASE_H
 #define COMPONENTBASE_H
 
+#include <graphviz/types.h>
+
+#include <cstddef>
 #include <iterator>
 #include <map>
 #include <memory>
@@ -11,6 +14,8 @@
 #include "Ports.h"
 
 namespace StreamFlow {
+
+// forward declaration
 
 enum componentStatus { running, done, paused, not_started };
 
@@ -29,22 +34,23 @@ class ComponentBase : public DocumentedObject {
   virtual void init() = 0;
   virtual void step() = 0;
 
-  void exposeIO(StreamFlow::IO_base &io_ptr) {
+  void exposeIO(ComponentBase &component, StreamFlow::IO_base &io_ptr) {
     io_ptr.markExposed();
     portsMap[io_ptr.name()] = &io_ptr;
+    io_ptr.info.componentName = name();
   }
 
   template <typename T>
-  StreamFlow::Input<T> createInput(std::string aname, std::string desc) {
+  StreamFlow::Input<T> createInput(ComponentBase &component, std::string aname, std::string desc) {
     StreamFlow::Input<T> port{aname, desc};
-    exposeIO(port);
+    exposeIO(component, port);
     return port;
   }
 
   template <typename T>
-  StreamFlow::Output<T> createOutput(std::string aname, std::string desc) {
+  StreamFlow::Output<T> createOutput(ComponentBase &component, std::string aname, std::string desc) {
     StreamFlow::Output<T> port{aname, desc};
-    exposeIO(port);
+    exposeIO(component, port);
     return port;
   }
 
@@ -66,6 +72,13 @@ class ComponentBase : public DocumentedObject {
       return portsMap[key];
     else
       throw std::out_of_range("port " + key + " unknown (check port name, and call to expose(port))");
+  }
+
+  void setName(std::string aName) noexcept {
+    DocumentedObject::setName(aName);
+    for (auto &port : portsMap) {
+      port.second->info.componentName = aName;
+    }
   }
 
   StreamFlow::IO_base &operator[](std::string key) { return *getFromMap(key); }
