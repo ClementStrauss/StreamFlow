@@ -16,9 +16,9 @@ using namespace cv;
 namespace StreamFlow {
 
 template <Mat Transform(Mat&)>
-class ImageTransform : public FactoryRegisteredComponent<ImageTransform<Transform>> {
+class ImageTransformer : public FactoryRegisteredComponent<ImageTransformer<Transform>> {
  public:
-  ImageTransform() : FactoryRegisteredComponent<ImageTransform<Transform>>("ImageTransformTemplate", "This is an image transform in -> out template") {
+  ImageTransformer() : FactoryRegisteredComponent<ImageTransformer<Transform>>("ImageTransformTemplate", "This is an image transform in -> out template") {
     // ComponentBase::exposeIO(out);
     // ComponentBase::exposeIO(in);
   }

@@ -15,22 +15,22 @@ class Graph {
   Graph() {
     gvc_ = gvContext();
 
-    static const char* fargv[] = {"neato", "-Tsvg"};  // NOLINT
-    gvParseArgs(gvc_, 2, (char**)fargv);              // NOLINT
+    static const char* fargv[] = {"circo", "-Tsvg", "-o/dev/null"};  // NOLINT
+    gvParseArgs(gvc_, 3, (char**)fargv);                             // NOLINT
 
-    graph_ = agopen((char*)"g", Agundirected, nullptr);  // NOLINT
+    graph_ = agopen((char*)"G", Agdirected, nullptr);  // NOLINT
 
     // clang-format off
-    set_graph_attr_def("splines",   "none");
-    set_graph_attr_def("ratio",     "1.25");
+    // set_graph_attr_def("splines",   "none");
+    // set_graph_attr_def("ratio",     "1.25");
 
-    set_node_attr_def("tooltip",    "");
-    set_node_attr_def("fillcolor",  "grey");
-    set_node_attr_def("shape",      "point");
-    set_node_attr_def("width",      "0.05");
-    set_node_attr_def("penwidth",   "0");
+    // set_node_attr_def("tooltip",    "");
+    //set_node_attr_def("fillcolor",  "grey");
+    set_node_attr_def("shape",      "box");
+    //set_node_attr_def("width",      "0.5");
+    // set_node_attr_def("penwidth",   "0");
 
-    set_edge_attr_def("weight",     "1");
+    // set_edge_attr_def("weight",     "1");
     // clang-format on
   }
 
@@ -48,43 +48,49 @@ class Graph {
     if (gvc_ != nullptr) gvFreeContext(gvc_);
   }
 
-  void set_graph_attr_def(std::string_view name, std::string_view value) {
-    agattr(graph_, AGRAPH, (char*)name.data(), (char*)value.data());  // NOLINT
+  void set_graph_attr_def(std::string name, std::string value) {
+    agattr(graph_, AGRAPH, (char*)name.c_str(), (char*)value.c_str());  // NOLINT
   }
 
-  void set_node_attr_def(std::string_view name, std::string_view value) {
-    agattr(graph_, AGNODE, (char*)name.data(), (char*)value.data());  // NOLINT
+  void set_node_attr_def(std::string name, std::string value) {
+    agattr(graph_, AGNODE, (char*)name.c_str(), (char*)value.c_str());  // NOLINT
   }
 
-  void set_edge_attr_def(std::string_view name, std::string_view value) {
-    agattr(graph_, AGEDGE, (char*)name.data(), (char*)value.data());  // NOLINT
+  void set_edge_attr_def(std::string name, std::string value) {
+    agattr(graph_, AGEDGE, (char*)name.c_str(), (char*)value.c_str());  // NOLINT
   }
 
-  void set_node_attr(Agnode_t* node, std::string_view name, std::string_view value) {  // NOLINT
-    agset(node, (char*)name.data(), (char*)value.data());                              // NOLINT
+  void set_node_attr(Agnode_t* node, std::string name, std::string value) {  // NOLINT
+    agset(node, (char*)name.c_str(), (char*)value.c_str());                  // NOLINT
   }
 
-  void set_edge_attr(Agedge_t* edge, std::string_view name, std::string_view value) {  // NOLINT
-    agset(edge, (char*)name.data(), (char*)value.data());                              // NOLIN
+  void set_edge_attr(Agedge_t* edge, std::string name, std::string value) {  // NOLINT
+    agset(edge, (char*)name.c_str(), (char*)value.c_str());                  // NOLIN
   }
 
-  Agedge_t* add_edge(Agnode_t* src, Agnode_t* dest, std::string_view weight_str) {
+  Agedge_t* add_edge(Agnode_t* src, Agnode_t* dest, std::string weight_str) {
     auto edge = agedge(graph_, src, dest, nullptr, 1);
     set_edge_attr(edge, "weight", weight_str);
     return edge;
   }
 
-  Agnode_t* add_node(std::string_view node_name) {
-    auto node = agnode(graph_, (char*)node_name.data(), 1);  // NOLINT
+  Agnode_t* add_node(std::string node_name) {
+    auto node = agnode(graph_, (char*)node_name.c_str(), 1);  // NOLINT
     set_node_attr(node, "tooltip", node_name);
     return node;
   }
 
-  void layout() { gvLayoutJobs(gvc_, graph_); }
+  void layout() {
+    std::cout << "layout" << std::endl;
+
+    gvLayoutJobs(gvc_, graph_);
+  }
 
   void render() {
     // gvRenderJobs(gvc_, graph_);
-    gvRenderFilename(gvc_, graph_, "dot", "test.dot");
+    std::cout << "render" << std::endl;
+
+    gvRenderFilename(gvc_, graph_, "png", "test.png");
   }
 
  private:

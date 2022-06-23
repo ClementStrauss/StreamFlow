@@ -41,6 +41,8 @@ class FactoryRegistrerWithName {
   }
 };
 
+#define ALIGNOF(...) alignof(__VA_ARGS__)
+
 #define REGISTER_IN_FACTORY(C) \
   template <>                  \
   FactoryRegistrar<C> C::FactoryRegisteredComponent<C>::registrar = FactoryRegistrar<C>(#C);

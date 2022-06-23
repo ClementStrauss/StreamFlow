@@ -1,12 +1,12 @@
-#include "ImageTransform.h"
-
 #include <opencv2/imgproc.hpp>
+
+#include "ImageTransformer.h"
 
 namespace StreamFlow {
 
 Mat imageTransformer(Mat& imageIn) { return imageIn; };
 
-REGISTER_IN_FACTORY_WITH_NAME(ImageTransform<imageTransformer>, identity);
+REGISTER_IN_FACTORY_WITH_NAME(ImageTransformer<imageTransformer>, identity);
 
 Mat grayscale(Mat& imageIn) {
   cv::Mat greyMat;
@@ -14,7 +14,7 @@ Mat grayscale(Mat& imageIn) {
   return greyMat;
 };
 
-REGISTER_IN_FACTORY_WITH_NAME(ImageTransform<grayscale>, grayscale);
+REGISTER_IN_FACTORY_WITH_NAME(ImageTransformer<grayscale>, grayscale);
 
 Mat sobelX(Mat& imageIn) {
   cv::Mat imageOut;
@@ -22,7 +22,7 @@ Mat sobelX(Mat& imageIn) {
   return imageOut;
 };
 
-REGISTER_IN_FACTORY_WITH_NAME(ImageTransform<sobelX>, sobelX);
+REGISTER_IN_FACTORY_WITH_NAME(ImageTransformer<sobelX>, sobelX);
 
 Mat sobelY(Mat& imageIn) {
   cv::Mat imageOut;
@@ -30,6 +30,6 @@ Mat sobelY(Mat& imageIn) {
   return imageOut;
 };
 
-REGISTER_IN_FACTORY_WITH_NAME(ImageTransform<sobelY>, sobelY);
+REGISTER_IN_FACTORY_WITH_NAME(ImageTransformer<sobelY>, sobelY);
 
 }  // namespace StreamFlow
