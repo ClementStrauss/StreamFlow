@@ -5,7 +5,9 @@
 namespace StreamFlow {
 
 int identityFunc(int& in) { return in; };
-typedef DataTransformer<int, int, identityFunc> identityDataTransformer;
+
+char desc[] = {"type name"};
+typedef DataTransformer<int, int, identityFunc, desc> identityDataTransformer;
 
 REGISTER_IN_FACTORY_WITH_NAME(identityDataTransformer, identityDataTransformer);
 

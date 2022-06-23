@@ -15,8 +15,8 @@ class Graph {
   Graph() {
     gvc_ = gvContext();
 
-    static const char* fargv[] = {"circo", "-Tsvg", "-o/dev/null"};  // NOLINT
-    gvParseArgs(gvc_, 3, (char**)fargv);                             // NOLINT
+    static const char* fargv[] = {"dot", "-Tpng", "-ograph.png"};  // NOLINT
+    gvParseArgs(gvc_, 3, (char**)fargv);                           // NOLINT
 
     graph_ = agopen((char*)"G", Agdirected, nullptr);  // NOLINT
 
@@ -61,16 +61,19 @@ class Graph {
   }
 
   void set_node_attr(Agnode_t* node, std::string name, std::string value) {  // NOLINT
-    agset(node, (char*)name.c_str(), (char*)value.c_str());                  // NOLINT
+    agsafeset(node, name.data(), value.data(), (char*)"");                   // NOLINT
   }
 
   void set_edge_attr(Agedge_t* edge, std::string name, std::string value) {  // NOLINT
-    agset(edge, (char*)name.c_str(), (char*)value.c_str());                  // NOLIN
+    agsafeset(edge, (char*)name.c_str(), (char*)value.c_str(), (char*)"");   // NOLIN
   }
 
-  Agedge_t* add_edge(Agnode_t* src, Agnode_t* dest, std::string weight_str) {
-    auto edge = agedge(graph_, src, dest, nullptr, 1);
-    set_edge_attr(edge, "weight", weight_str);
+  Agedge_t* add_edge(Agnode_t* src, Agnode_t* dest, std::string edgeName, std::string weight_str) {
+    auto edge = agedge(graph_, src, dest, edgeName.data(), 1);
+    // set_edge_attr(edge, "weight", weight_str);
+    set_edge_attr(edge, "label", edgeName);
+    // set_edge_attr(edge, "color", "red");
+
     return edge;
   }
 
@@ -83,6 +86,7 @@ class Graph {
   void layout() {
     std::cout << "layout" << std::endl;
 
+    // Write the graph according to -T and -o options
     gvLayoutJobs(gvc_, graph_);
   }
 
@@ -90,7 +94,14 @@ class Graph {
     // gvRenderJobs(gvc_, graph_);
     std::cout << "render" << std::endl;
 
-    gvRenderFilename(gvc_, graph_, "png", "test.png");
+    gvRenderFilename(gvc_, graph_, "dot", "test.dot");
+    gvFreeLayout(gvc_, graph_);
+
+    // Free graph structures
+    agclose(graph_);
+
+    // close output file, free context, and return number of errors
+    gvFreeContext(gvc_);
   }
 
  private:

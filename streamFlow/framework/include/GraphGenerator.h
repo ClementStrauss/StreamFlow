@@ -23,11 +23,11 @@ class GraphGenerator {
     graphvizNodes[nodeName] = graph.add_node(nodeName);
   }
 
-  void addEdge(std::string nodeName1, std::string nodeName2) {
+  void addEdge(std::string nodeName1, std::string nodeName2, std::string desc) {
     std::cout << "addEdge " + nodeName1 + " -> " + nodeName2 << std::endl;
     auto n1 = getNode(nodeName1);
     auto n2 = getNode(nodeName2);
-    if (n1 != nullptr && n2 != nullptr) graph.add_edge(n1, n2, "1");
+    if (n1 != nullptr && n2 != nullptr) graph.add_edge(n1, n2, desc, "1");
   }
 
   void draw() {

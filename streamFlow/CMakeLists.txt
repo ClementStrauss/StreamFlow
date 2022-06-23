@@ -24,7 +24,7 @@ target_include_directories(streamflow_component_lib PUBLIC components/include)
 target_link_libraries(streamflow_component_lib PRIVATE opencv::opencv pthread gvc cgraph cdt)
 
 # All users of this library will need at least C++11
-target_compile_features(streamflow_component_lib PUBLIC cxx_std_17)
+target_compile_features(streamflow_component_lib PUBLIC cxx_std_20)
 
 # IDEs should put the headers in a nice place
 source_group(

@@ -15,10 +15,11 @@ using namespace cv;
 
 namespace StreamFlow {
 
-template <typename I, typename O, O Transform(I&)>
-class DataTransformer : public FactoryRegisteredComponent<DataTransformer<I, O, Transform>> {
+template <typename I, typename O, O Transform(I &), const char *const str>
+class DataTransformer : public FactoryRegisteredComponent<DataTransformer<I, O, Transform, str>> {
  public:
-  DataTransformer() : FactoryRegisteredComponent<DataTransformer<I, O, Transform>>("DataTransformer", "This is an data transform in -> out template") {}
+  DataTransformer() : FactoryRegisteredComponent<DataTransformer<I, O, Transform, str>>("DataTransformer", str) {}
+  auto operator<=>(const DataTransformer &) const = default;
 
   void init() override {}
   void step() override { transformInputToOutput(); }
