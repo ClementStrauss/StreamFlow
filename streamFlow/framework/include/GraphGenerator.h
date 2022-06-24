@@ -18,9 +18,9 @@ class GraphGenerator {
   GraphGenerator(const GraphGenerator &) = delete;
   GraphGenerator &operator=(const GraphGenerator &) = delete;
 
-  void addNode(std::string nodeName) {
+  void addNode(std::string nodeName, std::string doc) {
     std::cout << "addNode " + nodeName << std::endl;
-    graphvizNodes[nodeName] = graph.add_node(nodeName);
+    graphvizNodes[nodeName] = graph.add_node(nodeName, doc);
   }
 
   void addEdge(std::string nodeName1, std::string nodeName2, std::string desc) {

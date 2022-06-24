@@ -35,7 +35,7 @@ class Application final : public DocumentedObject {
 
     instanciated_components_map[instanceName] = StreamFlow::Factory::create(factoryKey);
     instanciated_components_map[instanceName]->setName(instanceName);
-    GraphGenerator::instance().addNode(instanceName);
+    GraphGenerator::instance().addNode(instanceName, instanciated_components_map[instanceName]->doc());
   }
 
   void addNode(std::string factoryKey) { addComponent(factoryKey, factoryKey); }
