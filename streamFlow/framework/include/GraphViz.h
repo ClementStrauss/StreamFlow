@@ -79,6 +79,7 @@ class Graph {
 
   Agnode_t* add_node(std::string node_name, std::string doc) {
     auto node = agnode(graph_, (char*)node_name.c_str(), 1);  // NOLINT
+    set_node_attr(node, "labeljust", "l");
     set_node_attr(node, "label", doc);
     return node;
   }

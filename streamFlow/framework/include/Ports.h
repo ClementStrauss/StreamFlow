@@ -89,7 +89,7 @@ class IO_base : public DocumentedObject {
     grapvizConnect(other);
   }
 
-  void grapvizConnect(IO_base &other) { GraphGenerator::instance().addEdge(this->info.componentName, other.info.componentName, doc()); };
+  void grapvizConnect(IO_base &other) { GraphGenerator::instance().addEdge(this->info.componentName, other.info.componentName, other.doc() + "\n" + doc()); };
 
   void operator&(IO_base &other) { connect(other); }
 

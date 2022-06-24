@@ -24,7 +24,7 @@ class ImageDisplay : public FactoryRegisteredComponent<ImageDisplay> {
  public:
   ImageDisplay() : FactoryRegisteredComponent("ImageDisplay", "This is an image display for OpenCV") { exposeIO(*this, in); }
 
-  void init() override { namedWindow("Display window"); }
+  void init() override { namedWindow(name()); }
   void step() override { display(); }
 
  private:
@@ -34,8 +34,7 @@ class ImageDisplay : public FactoryRegisteredComponent<ImageDisplay> {
     //    cout << in.getElementNumber() << endl;
     Mat image = *(in.read());
 
-    imshow("Display window", image);
-    waitKey(60);
+    imshow(name(), image);
     //  std::this_thread::sleep_for(std::chrono::microseconds(100));
   }
 

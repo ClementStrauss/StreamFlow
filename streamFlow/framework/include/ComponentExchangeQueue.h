@@ -15,7 +15,7 @@ class Queue_Base : public DocumentedObject {
   virtual size_t size() = 0;
 };
 
-template <typename T, int maxSize = 8>
+template <typename T, int maxSize = 3>
 class ComponentExchangeQueue : public Queue_Base {
  public:
   T read() {

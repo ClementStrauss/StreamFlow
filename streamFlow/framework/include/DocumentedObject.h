@@ -17,7 +17,8 @@ class DocumentedObject {
 
   virtual std::string doc() const {
     std::ostringstream oss;
-    oss << "name=" << objectName << ", desc=" << documentationString << " ";
+    oss << objectName << ": " << std::endl;
+    oss << documentationString << std::endl;
     return oss.str();
   }
 
