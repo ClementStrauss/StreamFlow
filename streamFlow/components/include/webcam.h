@@ -37,6 +37,7 @@ class WebcamProducer : public FactoryRegisteredComponent<WebcamProducer> {
     cap.read(image);
     auto ptr = std::make_unique<Mat>(image.clone());
     out.write(ptr);
+
     waitKey(1);
 
     // cout << "image " << counter++  << " " << image.cols << " " << image.rows

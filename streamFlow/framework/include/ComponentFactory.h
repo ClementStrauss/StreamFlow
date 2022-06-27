@@ -16,7 +16,11 @@ using Creator = std::function<Object()>;
 class Factory {
  public:
   void static registerNewCreator(Key const &key, Creator const &creator);
+
   Object static create(Key const &key);
+
+  boolean static canBeCreated(Key const &key);
+
   std::string static describe();
 
  private:

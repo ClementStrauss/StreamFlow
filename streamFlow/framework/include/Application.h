@@ -14,7 +14,10 @@
 #include "GraphViz.h"
 
 namespace StreamFlow {
-
+/**
+ * @brief Application class, holding the component graph
+ *
+ */
 class Application final : public DocumentedObject {
  public:
   Application(std::string name = "application", std::string desc = "empty description") {
@@ -27,27 +30,54 @@ class Application final : public DocumentedObject {
 #endif
   }
 
-  // std::string doc() const override { return DocumentedObject::doc(); }
+  /**
+   * @brief Add a component into the application, create component with alias
+   *
+   * @param factoryKey identifier of the component to add
+   * @param instanceAlias alias name used to acces the instancianted component
+   */
+  void addComponentAs(std::string factoryKey, std::string instanceAlias) {
+    if (instanciated_components_map.count(instanceAlias) != 0)
+      throw std::runtime_error(factoryKey + " already created with name \"" + instanceAlias + "\" : cannot create two components with the same name");
 
-  void addComponent(std::string factoryKey, std::string instanceName) {
-    if (instanciated_components_map.count(instanceName) != 0)
-      throw std::runtime_error(factoryKey + " already created with name \"" + instanceName + "\" : cannot create two components with the same name");
-
-    instanciated_components_map[instanceName] = StreamFlow::Factory::create(factoryKey);
-    instanciated_components_map[instanceName]->setName(instanceName);
-    GraphGenerator::instance().addNode(instanceName, instanciated_components_map[instanceName]->doc());
+    instanciated_components_map[instanceAlias] = StreamFlow::Factory::create(factoryKey);
+    instanciated_components_map[instanceAlias]->setName(instanceAlias);
+    GraphGenerator::instance().addNode(instanceAlias, instanciated_components_map[instanceAlias]->doc());
   }
 
-  void addNode(std::string factoryKey) { addComponent(factoryKey, factoryKey); }
+  /**
+   * @brief Add a component into the application
+   *
+   * @param factoryKey : identifier of the component, used also to acces the instancianted component
+   */
+  void addComponent(std::string factoryKey) { addComponentAs(factoryKey, factoryKey); }
 
+  /**
+   * @brief Acces a component within the app. Usually to build the application's graph
+   * If the component does not exist yet it is auto-added to the application
+   *
+   * @param key : identifier key of the component
+   * @return StreamFlow::ComponentBase& : the instanciated component within the application
+   */
   StreamFlow::ComponentBase &operator[](std::string key) {
-    if (instanciated_components_map.count(key) == 0) throw std::runtime_error(key + " component does not exit");
+    if (instanciated_components_map.count(key) == 0) {
+      if (StreamFlow::Factory::canBeCreated(key)) {
+        addComponent(key);
+      } else {
+        throw std::runtime_error(key + " component does not exit");
+      }
+    }
+
     std::cout << "acces " + key << std::endl;
     (instanciated_components_map[key])->setName(key);
     return *(instanciated_components_map[key]);
   }
 
-  void run() {
+  /**
+   * @brief Start the application by starting all compoenents of the application graph
+   *
+   */
+  void start() {
     GraphGenerator::instance().draw();
     for (auto &component : instanciated_components_map) {
       std::cout << "init of " << component.first << std::endl;
@@ -68,12 +98,6 @@ class Application final : public DocumentedObject {
     }
   }
 
-  void join_all() {
-    for (auto &thread : threads) {
-      thread.second.join();
-    }
-  }
-
   ~Application() {
     join_all();
     instanciated_components_map.clear();
@@ -81,6 +105,12 @@ class Application final : public DocumentedObject {
   }
 
  private:
+  void join_all() {
+    for (auto &thread : threads) {
+      thread.second.join();
+    }
+  }
+
   std::map<std::string, std::unique_ptr<StreamFlow::ComponentBase>> instanciated_components_map;
   std::map<std::string, std::thread> threads;
   // initializes instace of a graphviz graph

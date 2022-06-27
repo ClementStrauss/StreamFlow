@@ -61,7 +61,7 @@ class Graph {
   }
 
   void set_node_attr(Agnode_t* node, std::string name, std::string value) {  // NOLINT
-    agsafeset(node, name.data(), value.data(), (char*)"");                   // NOLINT
+    agsafeset(node, name.data(), (value).data(), (char*)"");                 // NOLINT
   }
 
   void set_edge_attr(Agedge_t* edge, std::string name, std::string value) {  // NOLINT
@@ -71,6 +71,7 @@ class Graph {
   Agedge_t* add_edge(Agnode_t* src, Agnode_t* dest, std::string edgeName, std::string weight_str) {
     auto edge = agedge(graph_, src, dest, edgeName.data(), 1);
     // set_edge_attr(edge, "weight", weight_str);
+    leftJustify(edgeName);
     set_edge_attr(edge, "label", edgeName);
     // set_edge_attr(edge, "color", "red");
 
@@ -79,7 +80,7 @@ class Graph {
 
   Agnode_t* add_node(std::string node_name, std::string doc) {
     auto node = agnode(graph_, (char*)node_name.c_str(), 1);  // NOLINT
-    set_node_attr(node, "labeljust", "l");
+    leftJustify(doc);
     set_node_attr(node, "label", doc);
     return node;
   }
@@ -108,6 +109,26 @@ class Graph {
  private:
   Agraph_t* graph_ = nullptr;
   GVC_t* gvc_ = nullptr;
+
+  void leftJustify(std::string& aString) { replaceAll(aString, "\n", "\\l"); }
+
+  void replaceAll(std::string& s, std::string const& toReplace, std::string const& replaceWith) {
+    std::ostringstream oss;
+    std::size_t pos = 0;
+    std::size_t prevPos = pos;
+
+    while (true) {
+      prevPos = pos;
+      pos = s.find(toReplace, pos);
+      if (pos == std::string::npos) break;
+      oss << s.substr(prevPos, pos - prevPos);
+      oss << replaceWith;
+      pos += toReplace.size();
+    }
+
+    oss << s.substr(prevPos);
+    s = oss.str();
+  }
 };
 
 static constexpr const size_t max_colours = 30;

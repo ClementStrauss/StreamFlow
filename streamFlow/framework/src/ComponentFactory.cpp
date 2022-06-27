@@ -1,5 +1,7 @@
 #include "ComponentFactory.h"
 
+#include <graphviz/types.h>
+
 namespace StreamFlow {
 
 std::unordered_map<Key, Creator> &Factory::m_creators() {
@@ -20,6 +22,8 @@ Object Factory::create(Key const &key) {
   assert(m_creators()[key]);
   return m_creators()[key]();
 }
+
+boolean Factory::canBeCreated(Key const &key) { return m_creators().count(key) == 1; }
 
 std::string Factory::describe() {
   std::ostringstream oss;
