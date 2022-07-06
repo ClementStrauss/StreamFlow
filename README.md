@@ -18,6 +18,8 @@ The application is "build" at runtime. Ultimately this could be done by reading 
 
 The application generate a visual representation of the graph on startup, showing the node and connexions.
 
+![](graph.png)
+
 
 # Pre-build
 
