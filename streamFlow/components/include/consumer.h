@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ComponentBase.h"
 #include "ComponentFactory.h"
 #include "Ports.h"
 #include "registeredComponent.h"

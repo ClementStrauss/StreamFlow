@@ -9,7 +9,7 @@ class DocumentedObject {
  public:
   virtual ~DocumentedObject() = default;
 
-  std::string name() const noexcept { return objectName; }
+  virtual std::string name() const noexcept { return objectName; }
   void setName(std::string aName) noexcept { objectName = aName; }
 
   std::string docString() const noexcept { return documentationString; }

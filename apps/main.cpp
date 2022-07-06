@@ -14,7 +14,7 @@ int main() {
   Application app("put application name here");
 
   // add Component (or node) in the app with alias
-  app.addComponentAs("ImageDisplay", "display2");
+  app.addComponentAs("ImageDisplay", "ImageDisplay2");
 
   // connect app's components together
   app["WebcamProducer"]["out"] >> app["grayscale"]["in"];
@@ -24,7 +24,7 @@ int main() {
   app["MatDuplicator"]["out2"] >> app["sobelY"]["in"];
 
   app["sobelX"]["out"] >> app["ImageDisplay"]["in"];
-  app["sobelY"]["out"] >> app["display2"]["in"];
+  app["sobelY"]["out"] >> app["ImageDisplay2"]["in"];
 
   // Create a component outside to application to request its documentation
   std::cout << "Component documentation" << std::endl;

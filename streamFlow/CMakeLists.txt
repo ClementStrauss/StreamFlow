@@ -17,6 +17,8 @@ add_library(streamflow_component_lib SHARED ${SRC_LIST}  ${HEADER_LIST})
 
 # We need this directory, and users of our library will need it too
 target_include_directories(streamflow_component_lib PUBLIC framework/include)
+target_include_directories(streamflow_component_lib PUBLIC framework/include/IO)
+
 target_include_directories(streamflow_component_lib PUBLIC components/include)
 
 

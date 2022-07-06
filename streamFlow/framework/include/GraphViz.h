@@ -7,6 +7,7 @@
 #include <array>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 
 namespace StreamFlow {
 
@@ -113,7 +114,7 @@ class Graph {
   void leftJustify(std::string& aString) { replaceAll(aString, "\n", "\\l"); }
 
   void replaceAll(std::string& s, std::string const& toReplace, std::string const& replaceWith) {
-    std::ostringstream oss;
+    std::stringstream oss;
     std::size_t pos = 0;
     std::size_t prevPos = pos;
 

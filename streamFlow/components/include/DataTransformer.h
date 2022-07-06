@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/videoio.hpp>
@@ -30,8 +29,6 @@ class DataTransformer : public FactoryRegisteredComponent<DataTransformer<I, O, 
     O outputData = Transform(inputData);
     auto ptr = std::make_unique<O>(outputData);
     out.write(ptr);
-    // cout << "image " << counter++  << " " << image.cols << " " << image.rows
-    // << endl;
   }
 
   StreamFlow::Input<std::unique_ptr<I>> in = ComponentBase::createInput<std::unique_ptr<I>>(*this, "in", "input image");

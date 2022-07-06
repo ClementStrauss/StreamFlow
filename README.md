@@ -7,11 +7,16 @@ This is a toy project.
 
 A C++ framework to build multithreaded dataflow application. 
 
-The framework help you create reusable software modules that can be linked together at runtime. 
+The framework help you create reusable software modules that can be bring together at runtime. 
 
 Modules share data trought queue of various type. The way modules are assembled make the application. 
 
 Every modules and IO are self documented by design
+
+
+The application is "build" at runtime. Ultimately this could be done by reading a config file.
+
+The application generate a visual representation of the graph on startup, showing the node and connexions.
 
 
 # Pre-build
@@ -31,6 +36,7 @@ sudo apt-get install libwebp-dev
 https://github.com/conan-io/conan-center-index/blob/master/recipes/opencv/4.x/conanfile.py
 https://gitlab.com/CLIUtils/modern-cmake/tree/master/examples/extended-project
 
+# Build
 
 
 mkdir build && cd build
