@@ -18,7 +18,12 @@ class FactoryRegisteredComponent : public ComponentBase {
     return 0;
   }
 
-  std::string name() const noexcept override { return ComponentBase::name() + "/" + registrar.factoryKey; }
+  std::string name() const noexcept override {
+    if (ComponentBase::name().compare(registrar.factoryKey) == 0)
+      return ComponentBase::name();
+    else
+      return ComponentBase::name() + " as " + registrar.factoryKey;
+  }
 };
 }  // namespace StreamFlow
 #endif  // REGISTEREDCOMPONENT_H

@@ -15,10 +15,10 @@ class DocumentedObject {
   std::string docString() const noexcept { return documentationString; }
   void setDocString(std::string aDesc) noexcept { documentationString = aDesc; }
 
-  virtual std::string doc() const {
+  virtual std::string doc(bool verbose = false) const {
     std::ostringstream oss;
     oss << objectName << ": " << std::endl;
-    oss << documentationString << std::endl;
+    oss << "  " << documentationString << std::endl;
     return oss.str();
   }
 

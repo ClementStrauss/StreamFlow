@@ -35,8 +35,8 @@ class Duplicator : public FactoryRegisteredComponent<Duplicator<T, str>> {
   }
 
   StreamFlow::Input<std::unique_ptr<T>> in = ComponentBase::createInput<std::unique_ptr<T>>(*this, "in", "input");
-  StreamFlow::Output<std::unique_ptr<T>> out1 = ComponentBase::createOutput<std::unique_ptr<T>>(*this, "out1", "input duplicate 1");
-  StreamFlow::Output<std::unique_ptr<T>> out2 = ComponentBase::createOutput<std::unique_ptr<T>>(*this, "out2", "input duplicate 2");
+  StreamFlow::Output<std::unique_ptr<T>> out1 = ComponentBase::createOutput<std::unique_ptr<T>>(*this, "out1", "output duplicate 1");
+  StreamFlow::Output<std::unique_ptr<T>> out2 = ComponentBase::createOutput<std::unique_ptr<T>>(*this, "out2", "output duplicate 2");
 };
 
 template <typename T, const char *const str>

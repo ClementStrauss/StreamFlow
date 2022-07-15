@@ -44,7 +44,7 @@ class WebcamProducer : public FactoryRegisteredComponent<WebcamProducer> {
     // << endl;
   }
 
-  StreamFlow::Output<std::unique_ptr<Mat>> out{"out", "produce incrementing int every X microseconds"};
+  StreamFlow::Output<std::unique_ptr<Mat>> out{"out", "produce image from webcam"};
 
   int counter = 0;
 };

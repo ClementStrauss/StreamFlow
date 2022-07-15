@@ -18,7 +18,7 @@ namespace StreamFlow {
 template <Mat Transform(Mat&)>
 class ImageTransformer : public FactoryRegisteredComponent<ImageTransformer<Transform>> {
  public:
-  ImageTransformer() : FactoryRegisteredComponent<ImageTransformer<Transform>>("ImageTransformTemplate", "This is an image transform in -> out template") {
+  ImageTransformer() : FactoryRegisteredComponent<ImageTransformer<Transform>>("ImageTransformTemplate", "This is an image transformer") {
     // ComponentBase::exposeIO(out);
     // ComponentBase::exposeIO(in);
   }
@@ -40,7 +40,7 @@ class ImageTransformer : public FactoryRegisteredComponent<ImageTransformer<Tran
   }
 
   StreamFlow::Input<std::unique_ptr<Mat>> in = ComponentBase::createInput<std::unique_ptr<Mat>>(*this, "in", "input image");
-  StreamFlow::Output<std::unique_ptr<Mat>> out = ComponentBase::createOutput<std::unique_ptr<Mat>>(*this, "out", "input image");
+  StreamFlow::Output<std::unique_ptr<Mat>> out = ComponentBase::createOutput<std::unique_ptr<Mat>>(*this, "out", "output image");
 };
 
 }  // namespace StreamFlow

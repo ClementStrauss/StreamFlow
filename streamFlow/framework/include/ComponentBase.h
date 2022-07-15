@@ -54,7 +54,7 @@ class ComponentBase : public DocumentedObject {
     return port;
   }
 
-  std::string doc() const override {
+  std::string doc(bool verbose = false) const override {
     std::ostringstream oss;
     oss << "<" << name() << ">" << std::endl;
     oss << DocumentedObject::doc() << std::endl;

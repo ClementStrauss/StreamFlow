@@ -53,7 +53,7 @@ class FactoryRegistrerWithName {
 
 #define REGISTER_IN_FACTORY_WITH_NAME(C, _NAME) \
   template <>                                   \
-  FactoryRegistrar<C> C::FactoryRegisteredComponent<C>::registrar = FactoryRegistrar<C>(#_NAME);
+  StreamFlow::FactoryRegistrar<C> C::FactoryRegisteredComponent<C>::registrar = StreamFlow::FactoryRegistrar<C>(#_NAME);
 
 }  // namespace StreamFlow
 #endif  // COMPONENTFACTORY_H

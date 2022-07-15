@@ -32,7 +32,7 @@ class DataTransformer : public FactoryRegisteredComponent<DataTransformer<I, O, 
   }
 
   StreamFlow::Input<std::unique_ptr<I>> in = ComponentBase::createInput<std::unique_ptr<I>>(*this, "in", "input image");
-  StreamFlow::Output<std::unique_ptr<O>> out = ComponentBase::createOutput<std::unique_ptr<O>>(*this, "out", "input image");
+  StreamFlow::Output<std::unique_ptr<O>> out = ComponentBase::createOutput<std::unique_ptr<O>>(*this, "out", "output image");
 };
 
 }  // namespace StreamFlow

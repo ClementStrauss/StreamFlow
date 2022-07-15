@@ -35,7 +35,7 @@ class ImageDisplay : public FactoryRegisteredComponent<ImageDisplay> {
     Mat image = *(in.read());
 
     imshow(name(), image);
-    //  std::this_thread::sleep_for(std::chrono::microseconds(100));
+    std::this_thread::sleep_for(std::chrono::microseconds(20));
   }
 
   StreamFlow::Input<std::unique_ptr<Mat>> in{"in", "produce incrementing int every X microseconds"};
