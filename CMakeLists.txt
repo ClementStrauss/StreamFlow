@@ -32,8 +32,8 @@ add_subdirectory(streamFlow)
 # The executable code is here
 add_subdirectory(apps)
 
-
-
+# The executable code is here
+add_subdirectory(appsGraphCut)
 
 
 
