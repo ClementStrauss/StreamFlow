@@ -18,7 +18,8 @@ template <typename I, typename O, O Transform(I &), const char *const str>
 class DataTransformer : public FactoryRegisteredComponent<DataTransformer<I, O, Transform, str>> {
  public:
   DataTransformer() : FactoryRegisteredComponent<DataTransformer<I, O, Transform, str>>("DataTransformer", str) {}
-  auto operator<=>(const DataTransformer &) const = default;
+
+  // auto operator<=>(const DataTransformer &) const = default;
 
   void init() override {}
   void step() override { transformInputToOutput(); }

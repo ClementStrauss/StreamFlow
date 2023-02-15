@@ -17,7 +17,7 @@ int main() {
   // app.addComponentAs("ImageDisplay", "ImageDisplay2");
 
   // connect app's components together
-  app["WebcamProducer"]["out"] >> app["AutoGraphCut"]["bgrImage"];
+  app["VideoProducer"]["out"] >> app["AutoGraphCut"]["bgrImage"];
 
   // run the application, enjoy pipeline and parallelism;
   app.start();

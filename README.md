@@ -41,8 +41,21 @@ https://gitlab.com/CLIUtils/modern-cmake/tree/master/examples/extended-project
 # Build
 
 mkdir build && cd build  
-conan profile update settings.compiler.libcxx=libstdc++11 default  
+conan profile update settings.compiler.libcxx=libstdc++ default  
 conan install .. --build missing  
 cmake .. -DCMAKE_BUILD_TYPE=release  
-cmake --build .. -v  
+cmake --build . -v  
+
+
+# Build, Take2
+
+conan is a mess with opencv, cannot make it to work  
+1 . install opencv from source (mkdir build, cd build, cmake .., make -j8)  
+treat this repository as cmake project
+
+mkdir build  
+cd build  
+cmake-gui ..   
+make  
+
 

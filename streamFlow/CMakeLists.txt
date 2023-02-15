@@ -10,10 +10,10 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(OpenCV REQUIRED)
 
-include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
+# include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
 
 # Make an automatic library - will be static or dynamic based on user setting
-add_library(streamflow_component_lib SHARED ${SRC_LIST}  ${HEADER_LIST})
+add_library(streamflow_component_lib SHARED ${SRC_LIST} ${HEADER_LIST})
 
 # We need this directory, and users of our library will need it too
 target_include_directories(streamflow_component_lib PUBLIC framework/include)
@@ -21,9 +21,8 @@ target_include_directories(streamflow_component_lib PUBLIC framework/include/IO)
 
 target_include_directories(streamflow_component_lib PUBLIC components/include)
 
-
 # This depends on (header only) boost
-target_link_libraries(streamflow_component_lib PRIVATE opencv::opencv pthread gvc cgraph cdt)
+target_link_libraries(streamflow_component_lib PRIVATE ${OpenCV_LIBS} pthread gvc cgraph cdt)
 
 # All users of this library will need at least C++11
 target_compile_features(streamflow_component_lib PUBLIC cxx_std_20)
